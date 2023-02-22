@@ -1,0 +1,68 @@
+{% extends './base.html.twig' %}
+
+{% block title %}s'inscrire{% endblock %}
+{% form_theme registrationForm 'bootstrap_5_layout.html.twig' %}
+{% block header %}
+    {% include 'header.html.twig' %}
+{% endblock %}
+{% block body %}
+
+
+
+    
+    <div class="container mt-5">
+    <h1>Inscription</h1>
+    {{ form_start(registrationForm) }}
+    <div class="mb-3">
+        {{ form_row(registrationForm.firstName , {
+            attr : {
+                class : 'form-control'
+            }
+        }) }}
+       
+    </div>
+
+    <div class="mb-3">
+        {{ form_row(registrationForm.lastName , {
+            attr : {
+                class : 'form-control'
+            }
+        }) }}
+       
+    </div>
+
+    <div class="mb-3">
+        {{ form_row(registrationForm.tel , {
+            attr : {
+                class : 'form-control'
+            }
+        }) }}
+    
+    </div>
+
+    <div class="mb-3">
+            {{ form_row(registrationForm.email , {
+                attr : {
+                    class : 'form-control'
+                }
+            }) }}
+            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        </div>
+        
+    <div class="mb-3">
+        {{ form_row(registrationForm.plainPassword, {
+            label: 'Mot de passe'
+        }) }}
+    </div>
+
+    <div class="mb-3 form-check">
+        {{ form_row(registrationForm.agreeTerms, {
+            label: 'Conditions dinscription'
+        }) }}
+   
+    </div>  
+        
+        <button type="submit" class="btn btn-primary">S'inscrire</button>
+    {{ form_end(registrationForm) }}
+    </div>
+{% endblock %}

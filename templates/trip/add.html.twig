@@ -1,0 +1,25 @@
+{% extends './base.html.twig' %}
+
+{% block title %}ajouter un voyage{% endblock %}
+{% form_theme tripForm 'bootstrap_5_layout.html.twig' %}
+{% block header %}
+    {% include 'header.html.twig' %}
+{% endblock %}
+{% block body %}
+
+
+
+    
+    <div class="container mt-5">
+    <h1>Ajout d'un voyage</h1>
+    {{ form_start(tripForm) }}
+    <div class="mb-3">
+        {{form_widget(tripForm)}}
+       
+    </div>
+
+    
+        <button type="submit" class="btn btn-primary">ajouter</button>
+    {{ form_end(tripForm) }}
+    </div>
+{% endblock %}
