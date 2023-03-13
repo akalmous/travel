@@ -3,6 +3,13 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
+        <script src="https://kit.fontawesome.com/aac86c1a2f.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://kit.fontawesome.com/aac86c1a2f.css" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.1/dist/css/datepicker-bs5.min.css">
+        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/sidebars.css') }}">
+        <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous"/>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
@@ -40,17 +47,18 @@
                     </div>
                 </nav>
 
-
-                <nav class="navbar navbar-expand-lg  ">
-                    <div class="container  justify-content-center ">
-                    <div class="input-group navbar navbar-expand-lg mt-5 mb-5">
-
-                    <input type="text" class="form-control">
-                    <button class="btn btn-outline-secondary "  type="button">search</button>
-
-                    </div>
-                    </div>
-                </nav>
+                <form action="">
+                    <nav class="navbar navbar-expand-lg  ">
+                        <div class="container  justify-content-center ">
+                        <div class="input-group navbar navbar-expand-lg mt-5 mb-5">
+                        
+                        <input type="text" name="searchBar" class="form-control">
+                        <button class="btn btn-outline-secondary "  type="submit" >search</button>
+                        
+                        </div>
+                        </div>
+                    </nav>
+                </form>
             </div>
 
     </head>
@@ -60,4 +68,5 @@
             
         {% endblock %}
     </body>
+
 </html>

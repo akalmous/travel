@@ -4,26 +4,54 @@ namespace App\Controller;
 
 use App\Entity\Picture;
 use App\Entity\Trip;
+use App\Form\SearchSidenavType;
 use App\Form\TripFormType;
 use App\Repository\TripRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 
-#[Route('/trip', name: 'app_trip')]
+
+#[Route('/trip', name: '')]
 class TripController extends AbstractController
 {
     #[Route('/', name: 'all_trip')]
-    public function index(TripRepository $tripRepository): Response
+    public function index(Request $request, TripRepository $tripRepository): Response
     {
+           
+        
+            $tripsfilter = $tripRepository->findByName(
+                $request->query->get('searchBar'),
+                 $request->query->get('price'),
+                 $request->query->get('dateDate'),
+            );
+        //$searchBar=$request->query->get('searchBar');
+        //$tripsfilter = $tripRepository->findByName($searchBar);
+        
         return $this->render('trip/index.html.twig', [
-            'trips' => $tripRepository->findAll(),
+            'trips1' => $tripRepository->findAll(),  'trips' => $tripsfilter, 'request'=>$request
             
         ]);
+
+        
+
+        
+    }
+
+    #[Route('/', name: 'search_trip')]
+    public function searchBar(TripRepository $tripRepository, Request $request) : Response
+    {
+        $searchBar='0';
+        $searchBar=$request->query->get('searchBar');
+        var_dump($searchBar);
+        dump('tesr ' + $searchBar);
+        //$answers = $tripRepository->findBy($request->query->get('q'));
+        return $this->render('trip/index.html.twig',[$searchBar]);
     }
 
 
@@ -61,15 +89,13 @@ class TripController extends AbstractController
             $entityManager->flush();
             // ... perform some action, such as saving the task to the database
 
-            return $this->redirectToRoute('trip');
+            return $this->redirectToRoute('all_trip');
             }
              return $this->render('trip/add.html.twig', [
             'controller_name' => 'TripController', 'tripForm' => $form->createView(),
         ]);
     }
 
-    
 
-
-
+                                        
 }

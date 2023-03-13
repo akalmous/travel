@@ -45,6 +45,9 @@ class Trip
     #[ORM\OneToMany(mappedBy: 'trip', cascade: ["persist"], targetEntity: Picture::class)]
     private Collection $pictures;
 
+    #[ORM\Column(length: 255)]
+    private ?string $duration = null;
+
     public function __construct()
     {
         $this->pictures = new ArrayCollection();
@@ -177,6 +180,18 @@ class Trip
                 $picture->setTrip(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDuration(): ?string
+    {
+        return $this->duration;
+    }
+
+    public function setDuration(string $duration): self
+    {
+        $this->duration = $duration;
 
         return $this;
     }

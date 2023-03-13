@@ -8,27 +8,203 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
-<div class="container">
-{% for trip in trips %}
 
-<table class="table table-bordered">
-    <tr>
-        <th>Name</th>
-        <th>Image</th>
-        <th>Show</th>
+
+{% set maxValue = 0 %}
+{% set minValue = 99999999999 %}
+
+{% for trip in trips1 %} 
+    {% set maxValue = max(trip.price, maxValue) %}
+    {% set minValue = min(trip.price, minValue) %}
+{% endfor %} 
+
+{% set maxDateValue = 0 %}
+{% set minDateValue = 40 %}
+
+{% for trip in trips1 %} 
+    
+    {% set DateValue = date(trip.returnDate).diff(date(trip.departureDate)) %}
+    {% set diffDays = DateValue.days %}
+    {% set maxDateValue = max(diffDays, maxDateValue) %}
+    {% set minDateValue = min(diffDays, minDateValue) %}
+
+
+   
+{% endfor %} 
+    <div class="row">
+        <div class="col-3">
+            <div class="sidenav">
+                <div  class="container">
+                    <form action="">
+                        <button class='btn btn-secondary btn-block mb-3' type ="submit" style="width : 100%" >Filtrer</button>
+                        <h5>Le prix </h5>
+                            <input id="myRange" 
+                                min="{{minValue}}" 
+                                max="{{maxValue}}" 
+                                value="{{minValue}}"
+                                step="1" 
+                                type="range"
+                                name="price" 
+                                class="form-range" />
+                        <h6 style="text-align : center">
+                            
+                            <span  id="curr"></span>
+                        </h6>
+
+
+                    </div>
+
+
+                    {{ dump(trips) }}
+
         
-    </tr>
-<td>{{ trip.name}}</td>
-<td>
-{% for picture in trip.pictures %}
+                    
+
+                    <div class="container input-group  d-flex mt-3">
+                        <input class="form-control" style="width : 70%" type="search" placeholder="Search" name="searchBar">
+                        <button class="btn btn-outline-secondary"  type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        
+                    </div>
+                    
+
+                    <div class="container mt-5">
+                    <h5 for="startDate">Date de départ</h5>
+                    <input id="startDate" class="form-control" name="dateDate" type="date"  min="{{ "now"|date("Y-m-d") }}" max ="{{ 'now'|date_modify('+1 year')|date('Y-m-d') }}" />
+                    
+                    </div>
+
+                
+                    <div class="container mt-5">
+                    <h5>Liste des guides</h5>
+                    <div class="list-group-flush">
+                        <button class="list-group-item">
+                            
+                            <img  src="https://via.placeholder.com/150" style="border-radius: 50%; width : 35px" >
+                            <small class="text-muted">Nom du guide</small> 
+                            
+                        </button>
+                        <button class="list-group-item">
+                            <img  src="https://via.placeholder.com/150" style="border-radius: 50%; width : 35px" >
+                            <small class="text-muted">Nom du guide</small> 
+                        </button>
+                        <button class="list-group-item">
+                            <img  src="https://via.placeholder.com/150" style="border-radius: 50%; width : 35px" >
+                            <small class="text-muted">Nom du guide</small> 
+                        </button>
+                        <button class="list-group-item">
+                            <img  src="https://via.placeholder.com/150" style="border-radius: 50%; width : 35px" >
+                            <small class="text-muted">Nom du guide</small> 
+                        </button>
+                    </div>
+                    </div>
+
+                    <div id ="sidenava" class="container mt-3">
+                    <h5>Durée </h5>
+                        <input id="myRangeDate" 
+                            max='{{maxDateValue}}' 
+                            min='{{minDateValue}}' 
+                            value='{{minDateValue}}' 
+                            name="duration"
+                            type="range" 
+                            class="form-range" />
+                        <h6><span id="currDate"></span></h6>
 
 
-    <img src="{{ asset('/uploads/'~picture.name) }}" alt="" width="150">
-{% endfor %}
-</td>
-<td><a href="{{ path('trip_show',{'id' : trip.id }) }}"></a></td>
+                    </div>
+                </form>
 
-</table>
-{% endfor %}
-</div>
+            </div>
+        </div>
+    
+
+        <div class="col-9">
+            <div class="main">
+                <div  class="container">
+                    <div  class=" justify-content-center row row-cols-1 row-cols-md-2 g-0">
+                        {% if trips | length == 0 %}
+                                <h4>Aucun résulat pour votre recherche.</h4>
+                        {% else %}
+                        {% for trip in trips %}
+                            <div class="card mb-4" style="width: 800px; height : 250px">
+                                <div class="row no-gutters">
+                                    <div class="col-sm-5">
+                                        {% for picture in trip.pictures | slice(0, 1) %}
+                                        <img src="{{ asset('/uploads/'~picture.name) }}" class="card-img " alt="...">
+                                        {% endfor %}
+                                    </div>
+
+                                    <div class="col-sm-7">
+                                        <div class="card-body">
+
+                                            <div class=" d-flex w-100 justify-content-between"> 
+                                                <small class="text-muted">{{trip.departurePlace}}</small> 
+                                                <small class="text-muted">{{trip.price}}€</small>
+                                            </div>
+
+                                            <h5 class="card-title mt-2">{{ trip.name }}</h5>
+                                            <p id ="desc" class="card-text">{{ trip.description }}</p>
+                                            <p class="card-text"><small class="text-muted">Date de départ  {{ trip.departureDate |date('d-m-Y') }}</small>
+                                            <br>
+
+                                            <small class="text-muted mt-0">Date de retour  {{ trip.returnDate |date('d-m-Y') }}</small></p>
+
+                                            <div class="position-absolute bottom-1 ">
+                                                <img  src="https://via.placeholder.com/150" style="border-radius: 50%; width : 35px" >
+                                                <small class="text-muted">Nom du guide</small> 
+                                            </div>
+                                            
+                                            <div class="position-absolute bottom-1 end-0" style="margin-right : 5px;">
+                                                <a href="#"><small>En savoir plus</small></a>
+                                                <i  id="like" onclick="fav()" class="far fa-heart"></i>
+                                            </div>
+
+                                        </div>   
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+ 
+
+ 
+
+<script>
+
+
+ function fav() {
+    var icon = document.getElementById("like");
+      if (icon.classList.contains("far","fa-heart")) {
+        icon.classList.remove("far","fa-heart");
+        icon.classList.add("fas","fa-heart");
+    } else {
+       icon.classList.remove("fas","fa-heart");
+       icon.classList.add("far","fa-heart");
+    }
+ }
+
+
+var el = document.getElementById('curr');
+        var r = document.getElementById('myRange');
+        el.innerText = r.valueAsNumber + '€';
+        r.addEventListener('change', () => {
+            el.innerText = r.valueAsNumber + '€';
+        })
+
+var elDate = document.getElementById('currDate');
+var rDate = document.getElementById('myRangeDate');
+elDate.innerText =rDate.valueAsNumber + ' jours';
+rDate.addEventListener('change',()=>{
+    elDate.innerText = rDate.valueAsNumber + ' jours'
+})
+
+</script>
+
+
+
 {% endblock %}
