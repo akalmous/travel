@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello GuideController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+
+<div class="col-12">
+            <div class="main">
+                <div  class="container">
+                    <div  class=" justify-content-center row row-cols-1 row-cols-md-2 g-0">
+                    <h1 style="text-align : center">Mes voyages</h1>
+                        {% if trips | length == 0 %}
+                                <h4>Vous avez particpé à 0 voyages pour l'instant</h4>
+                        {% else %}
+                        {% for trip in trips %}
+                            <div class="card mb-4" style="width: 800px; height : 250px">
+                                <div class="row no-gutters">
+                                    <div class="col-sm-5">
+                                        {% for picture in trip.pictures | slice(0, 1) %}
+                                        <img src="{{ asset('/uploads/'~picture.name) }}" class="card-img " alt="...">
+                                        {% endfor %}
+                                    </div>
+
+                                    <div class="col-sm-7">
+                                        <div class="card-body">
+
+                                            <div class=" d-flex w-100 justify-content-between"> 
+                                                <small class="text-muted">{{trip.departurePlace}}</small> 
+                                                <small class="text-muted">{{trip.price}}€</small>
+                                            </div>
+
+                                            <h5 class="card-title mt-2">{{ trip.name }}</h5>
+                                            <p id ="desc" class="card-text">{{ trip.description }}</p>
+                                            <p class="card-text"><small class="text-muted">Date de départ  {{ trip.departureDate |date('d-m-Y') }}</small>
+                                            <br>
+
+                                            <small class="text-muted mt-0">Date de retour  {{ trip.returnDate |date('d-m-Y') }}</small></p>
+
+                                            <div class="position-absolute bottom-1 ">
+                                                <img  src="https://via.placeholder.com/150" style="border-radius: 50%; width : 35px" >
+                                                <small class="text-muted">Nom du guide</small> 
+                                            </div>
+                                            
+                                            <div class="position-absolute bottom-1 end-0" style="margin-right : 15px;">
+
+                                                <a href="{{ path('guide_show_trip', {'id': trip.id}) }}">  <i class="far fa-eye"></i></a>
+                                                
+                                            </div>
+
+                                        </div>   
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div> 
+        </div>
+</div>
+{% endblock %}

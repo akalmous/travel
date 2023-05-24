@@ -41,26 +41,38 @@ class TripRepository extends ServiceEntityRepository
         }
     }
 
-    
+    public function findTripGuide(){
+        $qb = $this->createQueryBuilder('t');
+        $qb->where("t.guide is not null ");
+        
+        return $qb
+            ->getQuery()
+            ->getResult();
+    }
 
 //    /**
 //     * @return Trip[] Returns an array of Trip objects
 //     */
-    public function findByName($searchBar, $price ,  $dateDate)
+    public function findByName($searchBar, $price ,  $dateDate, $duration)
     
     {
         
         $qb = $this->createQueryBuilder('t');
         $qb
             ->where('t.name  LIKE :searchBar')
-            ->orwhere('t.departurePlace lIKE :searchBar')
-
-            
-            ->setParameter('searchBar', '%' . $searchBar . '%');
-            
-            
+            ->where("t.guide is not null ");
             
 
+            
+            
+            
+            
+            
+            if($searchBar){
+                $qb->andwhere('t.departurePlace lIKE :searchBar')
+                ->setParameter('searchBar', '%' . $searchBar . '%');
+                ;
+            }
 
             if ($price) {
             $qb->andWhere('t.price <= :price ')
@@ -70,6 +82,11 @@ class TripRepository extends ServiceEntityRepository
                 $qb->andWhere('t.departureDate = :dateDate')
                 ->setParameter('dateDate',  $dateDate );
             }
+
+            if ($duration) {
+                $qb->andWhere('t.duration <= :duration')
+                ->setParameter('duration',  $duration );
+            }
             
             
 
@@ -78,10 +95,7 @@ class TripRepository extends ServiceEntityRepository
             
 
         ;
-        echo $qb;
-        echo $searchBar;
-        echo $price;
-        echo $dateDate;
+        
 
 
         return $qb

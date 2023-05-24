@@ -39,7 +39,7 @@ class Trip
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $returnDate = null;
 
-    #[ORM\Column(length: 1000)]
+    #[ORM\Column(length: 10000000)]
     private ?string $description = null;
 
     #[ORM\OneToMany(mappedBy: 'trip', cascade: ["persist"], targetEntity: Picture::class)]
@@ -47,6 +47,16 @@ class Trip
 
     #[ORM\Column(length: 255)]
     private ?string $duration = null;
+
+    #[ORM\Column(length: 10000000)]
+    private ?string $priceDesc = null;
+
+    #[ORM\ManyToOne(inversedBy: 'trips', cascade:["persist"])]
+    private ?Guide $guide = null;
+
+    
+
+    
 
     public function __construct()
     {
@@ -113,6 +123,7 @@ class Trip
 
     public function setReservedPlaces(?string $reservedPlaces): self
     {
+        
         $this->reservedPlaces = $reservedPlaces;
 
         return $this;
@@ -195,4 +206,32 @@ class Trip
 
         return $this;
     }
+
+    public function getPriceDesc(): ?string
+    {
+        return $this->priceDesc;
+    }
+
+    public function setPriceDesc(string $priceDesc): self
+    {
+        $this->priceDesc = $priceDesc;
+
+        return $this;
+    }
+
+    public function getGuide(): ?Guide
+    {
+        return $this->guide;
+    }
+
+    public function setGuide(?Guide $guide): self
+    {
+        $this->guide = $guide;
+
+        return $this;
+    }
+
+    
+
+    
 }

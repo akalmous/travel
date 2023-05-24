@@ -1,0 +1,107 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TripController!{% endblock %}
+
+{% block body %}
+
+<!--Images slide-->
+
+
+
+
+<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="false">
+
+    
+
+    <div class="carousel-inner">
+        {% for picture in trip.pictures %}
+            <div class="carousel-item active">
+                <img src="{{ asset('/uploads/'~picture.name) }}" style="height : 500px" class="d-block w-100" alt="...">
+            
+                <div class="justify-content-end carousel-caption d-none d-md-block" style="text-align : right">
+                    
+                    <button class="btn btn-secondary" style="width : 15%; border-radius: 15px"> Participer </button>
+                    <i  id="like" onclick="fav(this)" class="fa-regular fa-heart"></i>
+                </div>
+            </div>
+
+            
+        {% endfor %}  
+    </div>
+
+    {% for picture in trip.pictures %}
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+     {% endfor %}
+
+    {% for picture in trip.pictures %}
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+    {% endfor %}
+
+</div>
+
+<!--Sous menu desc-->
+<nav>
+    <div class="nav nav-tabs justify-content-center mt-5" id="nav-tab" role="tablist">
+        <a class="nav-item nav-link active" id="nav-desc-tab" data-toggle="tab" href="#nav-desc" role="tab" aria-controls="nav-desc" aria-selected="true">Description</a>
+        <a class="nav-item nav-link" id="nav-price-tab" data-toggle="tab" href="#nav-price" role="tab" aria-controls="nav-price" aria-selected="false">Prix</a>
+        <a class="nav-item nav-link" id="nav-duree-tab" data-toggle="tab" href="#nav-duree" role="tab" aria-controls="nav-duree" aria-selected="false">Durée</a>
+        <a class="nav-item nav-link" id="nav-guide-tab" data-toggle="tab" href="#nav-guide" role="tab" aria-controls="nav-guide" aria-selected="false">Guide</a>
+        
+    </div>
+</nav>
+
+<div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-desc" role="tabpanel" aria-labelledby="nav-desc-tab">
+        <div class="container my-5">
+            <h6>{{trip.description|raw}}</h6>
+            <h5>Le salaire de guide :{{trip.price}} €</h5>
+        </div>
+        
+    </div>
+
+    <div class="tab-pane fade" id="nav-price" role="tabpanel" aria-labelledby="nav-price-tab">
+       <div class="container my-5">
+            <h6>Le prix : {{trip.price}} €</h6>
+            <H6> Description du prix : {{trip.priceDesc|raw}}</H6>
+       </div>
+    </div>
+
+    <div class="tab-pane fade" id="nav-duree" role="tabpanel" aria-labelledby="nav-duree-tab">
+        <div class="container my-5">
+            <h4> Date de départ : {{trip.departureDate | date('d-m-Y')}} </h4>
+            <h4> Date de retour : {{trip.returnDate | date('d-m-Y')}}</h4>
+        </div>
+        
+    </div>
+
+    <div class="tab-pane fade" id="nav-guide" role="tabpanel" aria-labelledby="nav-guide-tab">
+
+    {% if trip.guide ==  null %}
+        <div class="container">
+            <small><a href="{{ path('participate_trip', {id: trip.id, userId: app.user.id}) }} "> Participer </a></small>
+       </div>
+    </div>
+    {% elseif trip.guide.user.id == app.user.id %}
+    <div class="container">
+            <small>Merci d'avoir participé à ce voyage </small>
+    </div>
+     {% else %} 
+     <div class="container">
+            <small>Un guide particpe déja à ce voyage </small>
+       </div>
+    </div>
+       
+    {% endif %}
+</div>
+ 
+
+    {{ dump(guides) }}
+    {{ dump(trip) }}
+
+{% endblock %}

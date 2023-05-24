@@ -1,0 +1,216 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TripController!{% endblock %}
+
+{% block body %}
+
+<!--Images slide-->
+
+
+
+
+<div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="false">
+
+    
+
+    <div class="carousel-inner">
+        {% for picture in trip.pictures %}
+            <div class="carousel-item active">
+                <img src="{{ asset('/uploads/'~picture.name) }}" style="height : 500px" class="d-block w-100" alt="...">
+            
+                <div class="justify-content-end carousel-caption d-none d-md-block" style="text-align : right">
+                    
+                    
+                    <a class="btn btn-secondary" style="width : 15%; border-radius: 15px" data-bs-toggle="modal" href="#exampleModalToggle" role="button">Réserver</a>
+                    <i  id="like" onclick="fav(this)" class="fa-regular fa-heart"></i>
+                </div>
+            </div>
+            
+            
+        {% endfor %}  
+    </div>
+    
+
+    {% for picture in trip.pictures %}
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+     {% endfor %}
+
+    {% for picture in trip.pictures %}
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+    {% endfor %}
+
+</div>
+
+<div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Les informations personnelles</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div>       
+                <label>nombre de personnes</label>  
+                <div class="form-group">
+                        
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button id="down" class="btn btn-default" onclick=" down('0')">-</button>
+                        </div>
+                        <input type="text" id="myNumber" class="form-control input-number" value="1" />
+                        <div class="input-group-btn">
+                            <button  id="up" class="btn btn-default" onclick="up('10')">+</button>
+                        </div>
+                    </div>
+                </div>
+                <label>nombre d'enfants moins de 6 ans "gratuit"</label>  
+                <div class="form-group">
+                        
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button id="down" class="btn btn-default" onclick=" downchildren('0')">-</button>
+                        </div>
+                        <input type="text" id="myNumberchildren" class="form-control input-number" value="1" />
+                        <div class="input-group-btn">
+                            <button  id="up" class="btn btn-default" onclick="upchildren('10')">+</button>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <div>
+        <p>Les informations personelles</p>
+        <label class="form-label">nom</label>
+        <input type="text" class="form-control" name="nom" id="">
+        <label class="form-label">prénom</label>
+        <input type="text" class="form-control" name="prénom" id="">
+        <label class="form-label">date de naissance</label>
+        <input type="date" class="form-control" name="date" id="">
+        <script>
+        for (let i = 0; i < form.down; i++) {
+        <h1>test</h1>
+        }
+        </script>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Continuer</button>
+        
+        
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Les informations personnelles</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label class="form-label">L'adresse</label>
+        <label class="form-label">Adresse</label>
+        <input type="text" class="form-control" name="adress" id="">
+        <label class="form-label">code postale</label>
+        <input type="text" class="form-control" name="cp" id="">
+        <label class="form-label">ville</label>
+        <input type="text" class="form-control" name="ville" id="">
+
+      </div>
+      <div class="modal-footer">
+        
+        <button class="btn btn-secondary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal">Retour</button>
+        <button type="button" class="btn btn-primary">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--Sous menu desc-->
+
+
+
+    <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="desc-tab" data-bs-toggle="tab" data-bs-target="#desc-tab-pane" type="button" role="tab" aria-controls="desc-tab-pane" aria-selected="true">Description</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="prix-tab" data-bs-toggle="tab" data-bs-target="#prix-tab-pane" type="button" role="tab" aria-controls="prix-tab-pane" aria-selected="false">prix</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="duree-tab" data-bs-toggle="tab" data-bs-target="#duree-tab-pane" type="button" role="tab" aria-controls="duree-tab-pane" aria-selected="false">Durée</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="guide-tab" data-bs-toggle="tab" data-bs-target="#guide-tab-pane" type="button" role="tab" aria-controls="guide-tab-pane" aria-selected="false" >Guide</button>
+        </li>
+    </ul>
+
+    
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="desc-tab-pane" role="tabpanel" aria-labelledby="desc-tab" tabindex="0">
+                <div class="container my-5">
+                    
+                    <div>{{trip.description|raw}}</div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="prix-tab-pane" role="tabpanel" aria-labelledby="prix-tab" tabindex="0">
+                <div class="container my-5">
+                    <h6>Le prix : {{trip.price}} €</h6>
+                    <div> Description du prix : {{trip.priceDesc|raw}}</div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="duree-tab-pane" role="tabpanel" aria-labelledby="duree-tab" tabindex="0">
+                <div class="container my-5">
+                    <h4> Date de départ : {{trip.departureDate | date('d-m-Y')}} </h4>
+                    <h4> Date de retour : {{trip.returnDate | date('d-m-Y')}}</h4>
+                </div>
+        </div>
+        <div class="tab-pane fade" id="guide-tab-pane" role="tabpanel" aria-labelledby="guide-tab" tabindex="0">
+                <div class="container my-5">
+                    <h6>Nom du guide : {{trip.guide.user.firstName}} {{trip.guide.user.lastName}}</h6>
+                    <h6>Le profil du guide </h6>{% for pictureGuide in trip.guide.pictureGuides %}
+                    <img src="{{ asset('/uploads/'~pictureGuide.name) }}" style="border-radius: 50%;  border: 0.2px solid black; width :50px" >
+                        {% endfor %}
+                    <h6 >{{trip.guide.description}}</h6> 
+                                    
+                    
+            
+        </div>
+    </div>
+ <script>
+ function up(max) {
+    document.getElementById("myNumber").value = parseInt(document.getElementById("myNumber").value) + 1;
+    if (document.getElementById("myNumber").value >= parseInt(max)) {
+        document.getElementById("myNumber").value = max;
+    }
+}
+function down(min) {
+    document.getElementById("myNumber").value = parseInt(document.getElementById("myNumber").value) - 1;
+    if (document.getElementById("myNumber").value <= parseInt(min)) {
+        document.getElementById("myNumber").value = min;
+    }
+}
+
+ function upchildren(max) {
+    document.getElementById("myNumberchildren").value = parseInt(document.getElementById("myNumberchildren").value) + 1;
+    if (document.getElementById("myNumberchildren").value >= parseInt(max)) {
+        document.getElementById("myNumberchildren").value = max;
+    }
+}
+function downchildren(min) {
+    document.getElementById("myNumberchildren").value = parseInt(document.getElementById("myNumberchildren").value) - 1;
+    if (document.getElementById("myNumberchildren").value <= parseInt(min)) {
+        document.getElementById("myNumberchildren").value = min;
+    }
+}
+</script>
+{% endblock %}

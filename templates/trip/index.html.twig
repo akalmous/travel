@@ -31,6 +31,7 @@
 
    
 {% endfor %} 
+
     <div class="row">
         <div class="col-3">
             <div class="sidenav">
@@ -41,7 +42,7 @@
                             <input id="myRange" 
                                 min="{{minValue}}" 
                                 max="{{maxValue}}" 
-                                value="{{minValue}}"
+                                value="{{maxValue}}"
                                 step="1" 
                                 type="range"
                                 name="price" 
@@ -55,14 +56,15 @@
                     </div>
 
 
-                    {{ dump(trips) }}
+                   
+                    
 
         
                     
 
                     <div class="container input-group  d-flex mt-3">
                         <input class="form-control" style="width : 70%" type="search" placeholder="Search" name="searchBar">
-                        <button class="btn btn-outline-secondary"  type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        <button class="btn btn-outline-secondary"  type="submit"><i style="color : black" class="fa-solid fa-magnifying-glass"></i></button>
                         
                     </div>
                     
@@ -77,24 +79,19 @@
                     <div class="container mt-5">
                     <h5>Liste des guides</h5>
                     <div class="list-group-flush">
+                    {% for guide in guides %}
+                        
+                    
                         <button class="list-group-item">
+                            {% for pictureGuide in guide.pictureGuides %}
+                                <img src="{{ asset('/uploads/'~pictureGuide.name) }}" style="border-radius: 50%;  border: 0.2px solid black; width :50px" >
+                            {% endfor %}
                             
-                            <img  src="https://via.placeholder.com/150" style="border-radius: 50%; width : 35px" >
-                            <small class="text-muted">Nom du guide</small> 
+                            <small class="text-muted">{{guide.user.firstName}} {{ guide.user.lastName}}</small> 
                             
                         </button>
-                        <button class="list-group-item">
-                            <img  src="https://via.placeholder.com/150" style="border-radius: 50%; width : 35px" >
-                            <small class="text-muted">Nom du guide</small> 
-                        </button>
-                        <button class="list-group-item">
-                            <img  src="https://via.placeholder.com/150" style="border-radius: 50%; width : 35px" >
-                            <small class="text-muted">Nom du guide</small> 
-                        </button>
-                        <button class="list-group-item">
-                            <img  src="https://via.placeholder.com/150" style="border-radius: 50%; width : 35px" >
-                            <small class="text-muted">Nom du guide</small> 
-                        </button>
+                        
+                    {% endfor %}
                     </div>
                     </div>
 
@@ -103,7 +100,7 @@
                         <input id="myRangeDate" 
                             max='{{maxDateValue}}' 
                             min='{{minDateValue}}' 
-                            value='{{minDateValue}}' 
+                            value='{{maxDateValue}}' 
                             name="duration"
                             type="range" 
                             class="form-range" />
@@ -120,20 +117,20 @@
         <div class="col-9">
             <div class="main">
                 <div  class="container">
-                    <div  class=" justify-content-center row row-cols-1 row-cols-md-2 g-0">
+                    <div  class=" justify-content-center">
                         {% if trips | length == 0 %}
                                 <h4>Aucun résulat pour votre recherche.</h4>
                         {% else %}
                         {% for trip in trips %}
-                            <div class="card mb-4" style="width: 800px; height : 250px">
-                                <div class="row no-gutters">
-                                    <div class="col-sm-5">
+                            <div class="card mb-5" style="width: 800px; height : 250px">
+                                <div class="row">
+                                    <div class="col-md-5">
                                         {% for picture in trip.pictures | slice(0, 1) %}
                                         <img src="{{ asset('/uploads/'~picture.name) }}" class="card-img " alt="...">
                                         {% endfor %}
                                     </div>
 
-                                    <div class="col-sm-7">
+                                    <div class="col-md-7">
                                         <div class="card-body">
 
                                             <div class=" d-flex w-100 justify-content-between"> 
@@ -142,20 +139,24 @@
                                             </div>
 
                                             <h5 class="card-title mt-2">{{ trip.name }}</h5>
-                                            <p id ="desc" class="card-text">{{ trip.description }}</p>
+                                            <div id ="desc" class="card-text">{{ trip.description|raw  }} </div>
                                             <p class="card-text"><small class="text-muted">Date de départ  {{ trip.departureDate |date('d-m-Y') }}</small>
                                             <br>
 
                                             <small class="text-muted mt-0">Date de retour  {{ trip.returnDate |date('d-m-Y') }}</small></p>
 
                                             <div class="position-absolute bottom-1 ">
-                                                <img  src="https://via.placeholder.com/150" style="border-radius: 50%; width : 35px" >
-                                                <small class="text-muted">Nom du guide</small> 
+                                                {% for pictureGuide in trip.guide.pictureGuides %}
+                                                    
+                                                    <img  src="{{ asset('/uploads/'~pictureGuide.name) }}" style="border-radius: 50%; width : 35px; border: 0.2px solid black;" >
+                                                {% endfor %}
+                                                
+                                                <small class="text-muted">{{trip.guide.user.firstName}}</small> 
                                             </div>
                                             
-                                            <div class="position-absolute bottom-1 end-0" style="margin-right : 5px;">
-                                                <a href="#"><small>En savoir plus</small></a>
-                                                <i  id="like" onclick="fav()" class="far fa-heart"></i>
+                                            <div class="position-absolute bottom-1 end-0" style="margin-right : 15px;">
+                                                <a href="{{ path('show_trip', {'id': trip.id}) }}"><small>En savoir plus</small></a>
+                                                <i  onclick="fav(this)" class="fa-regular fa-heart"></i>
                                             </div>
 
                                         </div>   
@@ -165,43 +166,36 @@
                             </div>
                         {% endfor %}
                         {% endif %}
-                    </div>
+                    
                 </div>
             </div> 
         </div>
     </div>
  
 
- 
+ <style>
+ .fa-solid{
+        
+        color : red;
+}
+
+ </style>
 
 <script>
 
-
- function fav() {
-    var icon = document.getElementById("like");
-      if (icon.classList.contains("far","fa-heart")) {
-        icon.classList.remove("far","fa-heart");
-        icon.classList.add("fas","fa-heart");
-    } else {
-       icon.classList.remove("fas","fa-heart");
-       icon.classList.add("far","fa-heart");
-    }
- }
-
-
-var el = document.getElementById('curr');
-        var r = document.getElementById('myRange');
-        el.innerText = r.valueAsNumber + '€';
-        r.addEventListener('change', () => {
-            el.innerText = r.valueAsNumber + '€';
-        })
-
-var elDate = document.getElementById('currDate');
+    var elDate = document.getElementById('currDate');
 var rDate = document.getElementById('myRangeDate');
 elDate.innerText =rDate.valueAsNumber + ' jours';
 rDate.addEventListener('change',()=>{
-    elDate.innerText = rDate.valueAsNumber + ' jours'
+   elDate.innerText = rDate.valueAsNumber + ' jours'
 })
+
+var el = document.getElementById('curr');
+       var r = document.getElementById('myRange');
+       el.innerText = r.valueAsNumber + '€';
+       r.addEventListener('change', () => {
+           el.innerText = r.valueAsNumber + '€';
+       })
 
 </script>
 
