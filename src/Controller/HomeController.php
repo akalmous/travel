@@ -8,6 +8,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
+
+    // la page d'accueil
     #[Route('/', name: 'app_home')]
     public function index(): Response
     {

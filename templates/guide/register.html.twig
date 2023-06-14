@@ -8,16 +8,80 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
-<div class="container mt-5">
+
+
+    <div class="container my-5">
     <h1>Inscription</h1>
     {{ form_start(guideForm) }}
     <div class="mb-3">
-        {{form_widget(guideForm)}}
+        {{ form_row(guideForm.user.firstName , {
+            attr : {
+                type : 'mail',
+                class : 'form-control',
+                label :  'Prénom'
+            }
+        }) }}
        
     </div>
 
-    
-        <button type="submit" class="btn btn-primary">ajouter</button>
-    {{ form_end(guideForm) }}
+    <div class="mb-3">
+        {{ form_row(guideForm.user.lastName , {
+            attr : {
+                class : 'form-control'
+            }
+        }) }}
+       
     </div>
+
+    <div class="mb-3">
+        {{ form_row(guideForm.user.tel , {
+            attr : {
+                class : 'form-control'
+            }
+        }) }}
+    
+    </div>
+
+    <div class="mb-3">
+            {{ form_row(guideForm.user.email , {
+                attr : {
+                    class : 'form-control'
+                }
+            }) }}
+            
+        </div>
+        
+    <div class="mb-3">
+        {{ form_row(guideForm.user.plainPassword, {
+            label: 'Mot de passe'
+        }) }}
+    </div>
+
+    
+
+    <div class="mb-3 ">
+        {{ form_row(guideForm.description, {
+            label: "Description de votre profil"
+        }) }}
+   
+    </div> 
+    
+     
+    <div class="mb-3 ">
+        {{ form_row(guideForm.pictureguides, {
+            label: "Images"
+        }) }}
+   
+    </div>
+    
+    <div class="mb-3 ">
+        {{ form_row(guideForm.user.agreeTerms, {
+            label: "Conditions d'inscription"
+        }) }}
+   
+    </div>
+        <button type="submit" class="btn btn-primary">S'inscrire</button>
+        
+        
+    {{ form_end(guideForm) }}
 {% endblock %}

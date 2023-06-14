@@ -10,13 +10,15 @@
 
 
     
-    <div class="container mt-5">
+    <div class="container my-5">
     <h1>Inscription</h1>
     {{ form_start(registrationForm) }}
     <div class="mb-3">
         {{ form_row(registrationForm.firstName , {
             attr : {
-                class : 'form-control'
+                type : 'mail',
+                class : 'form-control',
+                label :  'Prénom'
             }
         }) }}
        
@@ -46,7 +48,7 @@
                     class : 'form-control'
                 }
             }) }}
-            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            
         </div>
         
     <div class="mb-3">
@@ -55,16 +57,26 @@
         }) }}
     </div>
 
-    <div class="mb-3 form-check">
+    <div class="mb-3 ">
         {{ form_row(registrationForm.agreeTerms, {
-            label: 'Conditions dinscription'
+            label: "Conditions d'inscription"
         }) }}
    
     </div>  
+    {% if is_granted('ROLE_GUIDE') %}
+    <div class="mb-3 ">
+        {{ form_row(registrationForm.agreeTerms, {
+            label: "Conditions d'inscription"
+        }) }}
+   
+    </div>
+    {% endif %}
         
         <button type="submit" class="btn btn-primary">S'inscrire</button>
-        <a href="{{ path( 'register_guide')}}" > Inscrivez-vous en tant que guide </a>
+        
         
     {{ form_end(registrationForm) }}
+    <br>
+    <a href="{{ path( 'register_guide')}}" > Inscrivez-vous en tant que guide </a>
     </div>
 {% endblock %}

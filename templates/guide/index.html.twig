@@ -18,7 +18,7 @@
                                 <h4>Vous avez particpé à 0 voyages pour l'instant</h4>
                         {% else %}
                         {% for trip in trips %}
-                            <div class="card mb-4" style="width: 800px; height : 250px">
+                            <div class="card mt-3 mb-4" style="width: 800px; height : 250px">
                                 <div class="row no-gutters">
                                     <div class="col-sm-5">
                                         {% for picture in trip.pictures | slice(0, 1) %}

@@ -1,0 +1,125 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!{% endblock %}
+{% form_theme registrationForm 'bootstrap_5_layout.html.twig' %}
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+<div class="container">
+<h1 style="text-align : center">Modifier mes informations personnelles</h1>
+{{ form_start(registrationForm, { attr: {novalidate: 'novalidate'} }) }}
+
+
+        {% if is_granted('ROLE_GUIDE') %}
+
+        
+        
+       <div class="mb-3">
+        {{ form_row(registrationForm.user.firstName , {
+            attr : {
+                type : 'mail',
+                class : 'form-control',
+                label :  'Prénom'
+            }
+        }) }}
+       
+    </div>
+
+    <div class="mb-3">
+        {{ form_row(registrationForm.user.lastName , {
+            attr : {
+                class : 'form-control'
+            }
+        }) }}
+       
+    </div>
+
+    <div class="mb-3">
+        {{ form_row(registrationForm.user.tel , {
+            attr : {
+                class : 'form-control'
+            }
+        }) }}
+    
+    </div>
+
+    <div class="mb-3">
+            {{ form_row(registrationForm.user.email , {
+                attr : {
+                    class : 'form-control'
+                }
+            }) }}
+            
+        </div>
+        
+    
+
+    
+
+    <div class="mb-3 ">
+        {{ form_row(registrationForm.description, {
+            label: "Description de votre profil"
+        }) }}
+   
+    </div>
+
+    {% elseif is_granted('ROLE_USER') %} 
+        <div class="mb-3">
+        {{ form_row(guideForm.firstName , {
+            attr : {
+                type : 'mail',
+                class : 'form-control',
+                label :  'Prénom'
+            }
+        }) }}
+       
+    </div>
+
+    <div class="mb-3">
+        {{ form_row(guideForm.lastName , {
+            attr : {
+                class : 'form-control'
+            }
+        }) }}
+       
+    </div>
+
+    <div class="mb-3">
+        {{ form_row(guideForm.tel , {
+            attr : {
+                class : 'form-control'
+            }
+        }) }}
+    
+    </div>
+
+    <div class="mb-3">
+            {{ form_row(guideForm.email , {
+                attr : {
+                    class : 'form-control'
+                }
+            }) }}
+            
+        </div>
+        
+    
+
+    
+
+    
+    {% endif %}
+        
+        <button type="submit" class="btn btn-primary">Modifier </button>
+        {{ form_end(registrationForm, {'render_rest': false}) }}
+        <br>
+        <div class="container mb-5">
+       {% if  is_granted('ROLE_GUIDE')  %}
+        <a class="my-4" href="{{ path('tripGuide')}}">Mes voyages</a>
+        {% else %}
+        <a class="my-4" href="{{ path('user_reservation')}}">Mes réservations</a>
+        {% endif %}
+        </div>
+</div>
+{% endblock %}

@@ -17,25 +17,32 @@ use Symfony\Component\Routing\Annotation\Route;
 use DateTimeInterface;
 use DateTime ;
 
-#[Route('/trip', name: '')]
+
+// fonction pour récuperer tout les trips
+#[Route('/voyages', name: '')]
 class TripController extends AbstractController
 {
+    
     #[Route('/', name: 'all_trip')]
+    
     public function index(Request $request, TripRepository $tripRepository, GuideRepository $guideRepository): Response
     {
-           
-        
+            
+            // la barre de recherche
             $tripsfilter = $tripRepository->findByName(
                 $request->query->get('searchBar'),
                  $request->query->get('price'),
                  $request->query->get('dateDate'),
                  $request->query->get('duration'),
+                 $request->query->get('guide'),
             );
             
             
         //$searchBar=$request->query->get('searchBar');
         //$tripsfilter = $tripRepository->findByName($searchBar);
+
         
+        // on renvoir que les trips avec un guide et toute la liste des  guides 
         return $this->render('trip/index.html.twig', [
             'trips1' => $tripRepository->findTripGuide(),  'trips' => $tripsfilter, 'request'=>$request,'guides'=>$guideRepository->findAll(),
             
@@ -61,10 +68,10 @@ class TripController extends AbstractController
 
     
     #[Route('/new', name: 'new_trip')]
-    public function addTrip(Request $request, EntityManagerInterface $entityManager): Response
+    public function addTrip(Request $request, EntityManagerInterface $entityManager, TripRepository $tripRepository, GuideRepository $guideRepository): Response
     {
        
-
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         
         $trip = new Trip();
         $form = $this->createForm(TripFormType::class, $trip);
@@ -111,7 +118,7 @@ class TripController extends AbstractController
             
             }
              return $this->render('trip/add.html.twig', [
-            'controller_name' => 'TripController', 'tripForm' => $form->createView(),
+            'controller_name' => 'TripController', 'tripForm' => $form->createView(),'trips1' => $tripRepository->findTripGuide(),'guides'=>$guideRepository->findAll(), 
         ]);
     }
 
@@ -125,6 +132,13 @@ class TripController extends AbstractController
             'trip' => $tripRepository->findOneBy(['id' => $id]), 
             
         ]);
+    }
+
+    #[Route('/', name: 'edit_trip')]
+    public function action(): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        return $this->render('template.html.twig');
     }
 
 

@@ -28,12 +28,16 @@ class Guide
     #[ORM\OneToMany(mappedBy: 'guide', cascade:["persist"], targetEntity: Trip::class)]
     private Collection $trips;
 
+    #[ORM\OneToMany(mappedBy: 'guide', targetEntity: Booking::class)]
+    private Collection $bookings;
+
     
 
     public function __construct()
     {
         $this->pictureGuides = new ArrayCollection();
         $this->trips = new ArrayCollection();
+        $this->bookings = new ArrayCollection();
         
     }
 
@@ -120,6 +124,36 @@ class Guide
             // set the owning side to null (unless already changed)
             if ($trip->getGuide() === $this) {
                 $trip->setGuide(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Booking>
+     */
+    public function getBookings(): Collection
+    {
+        return $this->bookings;
+    }
+
+    public function addBooking(Booking $booking): self
+    {
+        if (!$this->bookings->contains($booking)) {
+            $this->bookings->add($booking);
+            $booking->setGuide($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBooking(Booking $booking): self
+    {
+        if ($this->bookings->removeElement($booking)) {
+            // set the owning side to null (unless already changed)
+            if ($booking->getGuide() === $this) {
+                $booking->setGuide(null);
             }
         }
 

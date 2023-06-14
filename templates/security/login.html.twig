@@ -14,6 +14,11 @@
         </div>
     {% endif %}
 <div class="container">
+    {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+    {% endfor %}
     <h1 class="h3 mb-3 font-weight-normal">Connectez-vous</h1>
     <label for="inputEmail">Email</label>
     <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
@@ -36,8 +41,11 @@
     #}
 
     <button class="btn btn-lg btn-primary mt-5" type="submit">
-        Sign in
+        Connexion
     </button>
-    </div>
+   
 </form>
+<br>
+<a href="{{path('app_register')}}">Inscrivez-vous</a>
+ </div>
 {% endblock %}

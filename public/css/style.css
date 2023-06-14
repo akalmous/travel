@@ -134,6 +134,37 @@
         color: #95d7fc;
 }
 #myNumber{
-        width: 100%;
+        width: 25px;
         text-align: center;
 }
+
+#myNumberchildren{
+        width: 25px;
+        text-align: center; 
+}
+
+#myform {
+        text-align: center;
+        padding: 5px;
+        border: 1px dotted #ccc;
+        margin: 2%;
+    }
+    .qty {
+        width: 40px;
+        height: 25px;
+        text-align: center;
+    }
+    input.qtyplus { width:25px; height:25px;}
+    input.qtyminus { width:25px; height:25px;}
+
+    .imgGuide{
+        width : 35px;
+         height : 35px;
+        border: 1px black;
+        -moz-border-radius : 25px;
+        -webkit-border-radius : 25px;
+        border-radius : 25px;
+
+
+    }
+    

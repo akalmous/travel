@@ -53,7 +53,7 @@ class TripRepository extends ServiceEntityRepository
 //    /**
 //     * @return Trip[] Returns an array of Trip objects
 //     */
-    public function findByName($searchBar, $price ,  $dateDate, $duration)
+    public function findByName($searchBar, $price ,  $dateDate, $duration, $guide)
     
     {
         
@@ -65,39 +65,53 @@ class TripRepository extends ServiceEntityRepository
 
             
             
-            
+            // filtrer par la barre de recherche soit par le nom du voyage ou le nom de la destination
             
             
             if($searchBar){
-                $qb->andwhere('t.departurePlace lIKE :searchBar')
+                $qb->andwhere('t.departurePlace lIKE :searchBar');
+                $qb->orWhere('t.name  LIKE :searchBar')
                 ->setParameter('searchBar', '%' . $searchBar . '%');
                 ;
             }
+            // filtrer par le prix
 
             if ($price) {
             $qb->andWhere('t.price <= :price ')
             ->setParameter('price',  $price );
-        }
+            }
+
+            //filtrer par la date de départ
             if ($dateDate) {
                 $qb->andWhere('t.departureDate = :dateDate')
                 ->setParameter('dateDate',  $dateDate );
             }
 
+            // filter par la durée du voyage
+
             if ($duration) {
                 $qb->andWhere('t.duration <= :duration')
                 ->setParameter('duration',  $duration );
             }
+
+            if ($guide) {
+              $qb->andWhere('t.guide = :guide')
+                ->setParameter('guide',  $guide );
+                # code...
+           }
             
+           
             
+         
+
+           
 
 
             
-            
-
-        ;
         
-
-
+        echo($qb);
+        echo("      TEST!!");
+        echo($guide);
         return $qb
             ->getQuery()
             ->getResult();

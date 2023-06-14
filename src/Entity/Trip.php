@@ -54,6 +54,9 @@ class Trip
     #[ORM\ManyToOne(inversedBy: 'trips', cascade:["persist"])]
     private ?Guide $guide = null;
 
+    #[ORM\OneToMany(mappedBy: 'trip', targetEntity: Booking::class)]
+    private Collection $bookings;
+
     
 
     
@@ -61,6 +64,7 @@ class Trip
     public function __construct()
     {
         $this->pictures = new ArrayCollection();
+        $this->bookings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -227,6 +231,36 @@ class Trip
     public function setGuide(?Guide $guide): self
     {
         $this->guide = $guide;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Booking>
+     */
+    public function getBookings(): Collection
+    {
+        return $this->bookings;
+    }
+
+    public function addBooking(Booking $booking): self
+    {
+        if (!$this->bookings->contains($booking)) {
+            $this->bookings->add($booking);
+            $booking->setTrip($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBooking(Booking $booking): self
+    {
+        if ($this->bookings->removeElement($booking)) {
+            // set the owning side to null (unless already changed)
+            if ($booking->getTrip() === $this) {
+                $booking->setTrip(null);
+            }
+        }
 
         return $this;
     }

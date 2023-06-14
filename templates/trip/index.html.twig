@@ -63,7 +63,7 @@
                     
 
                     <div class="container input-group  d-flex mt-3">
-                        <input class="form-control" style="width : 70%" type="search" placeholder="Search" name="searchBar">
+                        <input class="form-control" style="width : 70%" type="search" placeholder="Rechercher" name="searchBar">
                         <button class="btn btn-outline-secondary"  type="submit"><i style="color : black" class="fa-solid fa-magnifying-glass"></i></button>
                         
                     </div>
@@ -81,15 +81,15 @@
                     <div class="list-group-flush">
                     {% for guide in guides %}
                         
-                    
-                        <button class="list-group-item">
-                            {% for pictureGuide in guide.pictureGuides %}
-                                <img src="{{ asset('/uploads/'~pictureGuide.name) }}" style="border-radius: 50%;  border: 0.2px solid black; width :50px" >
-                            {% endfor %}
-                            
-                            <small class="text-muted">{{guide.user.firstName}} {{ guide.user.lastName}}</small> 
-                            
-                        </button>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="guide" value="{{guide.id}}" id="flexCheckChecked" checked>
+                         {% for pictureGuide in guide.pictureGuides %}
+                                <img src="{{ asset('/uploads/'~pictureGuide.name) }}" class="imgGuide">
+                        {% endfor %}
+                        <small class="form-check-label" for="flexCheckChecked">{{guide.user.firstName}} {{ guide.user.lastName}}</small>
+                        
+                    </div>
+                        
                         
                     {% endfor %}
                     </div>
@@ -104,7 +104,7 @@
                             name="duration"
                             type="range" 
                             class="form-range" />
-                        <h6><span id="currDate"></span></h6>
+                        <h6 style="text-align : center"><span id="currDate"></span></h6>
 
 
                     </div>
@@ -148,7 +148,7 @@
                                             <div class="position-absolute bottom-1 ">
                                                 {% for pictureGuide in trip.guide.pictureGuides %}
                                                     
-                                                    <img  src="{{ asset('/uploads/'~pictureGuide.name) }}" style="border-radius: 50%; width : 35px; border: 0.2px solid black;" >
+                                                    <img  src="{{ asset('/uploads/'~pictureGuide.name) }}" class="imgGuide" >
                                                 {% endfor %}
                                                 
                                                 <small class="text-muted">{{trip.guide.user.firstName}}</small> 
@@ -180,25 +180,23 @@
 }
 
  </style>
-
 <script>
-
-    var elDate = document.getElementById('currDate');
+var elDate = document.getElementById('currDate');
 var rDate = document.getElementById('myRangeDate');
-elDate.innerText =rDate.valueAsNumber + ' jours';
+
+console.log(rDate);
+elDate.innerText =rDate.valueAsNumber + ' jour(s)';
 rDate.addEventListener('change',()=>{
-   elDate.innerText = rDate.valueAsNumber + ' jours'
+    elDate.innerText = rDate.valueAsNumber + ' jour(s)'
+})
+    
+var el = document.getElementById('curr');
+var r = document.getElementById('myRange');
+el.innerText = r.valueAsNumber + '€';
+r.addEventListener('change', () => {
+     el.innerText = r.valueAsNumber + '€';
 })
 
-var el = document.getElementById('curr');
-       var r = document.getElementById('myRange');
-       el.innerText = r.valueAsNumber + '€';
-       r.addEventListener('change', () => {
-           el.innerText = r.valueAsNumber + '€';
-       })
-
 </script>
-
-
 
 {% endblock %}

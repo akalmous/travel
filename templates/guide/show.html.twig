@@ -19,9 +19,21 @@
                 <img src="{{ asset('/uploads/'~picture.name) }}" style="height : 500px" class="d-block w-100" alt="...">
             
                 <div class="justify-content-end carousel-caption d-none d-md-block" style="text-align : right">
-                    
-                    <button class="btn btn-secondary" style="width : 15%; border-radius: 15px"> Participer </button>
+                    {% if trip.guide ==  null %}
+                        
+                        <a href="{{ path('participate_trip', {id: trip.id, userId: app.user.id}) }} " class="btn btn-secondary" style="width : 15%; border-radius: 15px" type ="submit" name= "participate"> Participer </a>
+                        
                     <i  id="like" onclick="fav(this)" class="fa-regular fa-heart"></i>
+                    {% elseif trip.guide.user.id == app.user.id %}
+                    
+                        <button class="btn btn-secondary" style="width : 25%; border-radius: 15px">Merci d'avoir participé à ce voyage </button>
+                    
+                    {% else %} 
+                    
+                        <small class="btn btn-secondary" style="width : 15%; border-radius: 15px">Un guide particpe déja à ce voyage </small>
+
+                    {% endif %}
+                    
                 </div>
             </div>
 
@@ -94,14 +106,13 @@
      {% else %} 
      <div class="container">
             <small>Un guide particpe déja à ce voyage </small>
-       </div>
+    </div>
     </div>
        
     {% endif %}
 </div>
  
 
-    {{ dump(guides) }}
-    {{ dump(trip) }}
+   
 
 {% endblock %}
