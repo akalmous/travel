@@ -2,6 +2,12 @@
 
 {% block title %}Hello GuideController!{% endblock %}
 {% form_theme guideForm 'bootstrap_5_layout.html.twig' %}
+
+{% block header %}
+ <script src="https://cdn.ckeditor.com/ckeditor5/37.0.1/classic/ckeditor.js"></script>
+    {% include 'header.html.twig' %}
+
+{% endblock %}
 {% block body %}
 <style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
@@ -11,8 +17,10 @@
 
 
     <div class="container my-5">
-    <h1>Inscription</h1>
+    <h1 style ="text-align : center">Inscription</h1>
     {{ form_start(guideForm) }}
+
+    <form METHOD ="POST" action="{{path('register_guide')}}">
     <div class="mb-3">
         {{ form_row(guideForm.user.firstName , {
             attr : {
@@ -59,13 +67,12 @@
 
     
 
-    <div class="mb-3 ">
-        {{ form_row(guideForm.description, {
-            label: "Description de votre profil"
-        }) }}
-   
-    </div> 
     
+    
+    <div class="mb-3">
+        <h6>Description de votre profil <h6>
+        <textarea name="guideDesc" class="editor" ></textarea>
+    </div>
      
     <div class="mb-3 ">
         {{ form_row(guideForm.pictureguides, {
@@ -80,8 +87,67 @@
         }) }}
    
     </div>
-        <button type="submit" class="btn btn-primary">S'inscrire</button>
+   <div style ="text-align: center;" class="container">
+   <button type="submit" style =" width : 200px; text-align: center; " class=" btn btn-secondary">S'inscrire</button>
+   <br>
+   </div>
+    
         
-        
+    </form>
     {{ form_end(guideForm) }}
+
+
+    <script>
+      tinymce.init({
+        
+        selector: '.editor',
+        language: 'fr_FR',
+        language_url: './trip/fr_FR',
+        plugins: [
+            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+            'insertdatetime', 'media','help', 'wordcount'
+        ],
+        toolbar: 'undo redo | blocks | ' +
+        'bold italic backcolor | alignleft aligncenter ' +
+        'alignright alignjustify | bullist numlist outdent indent | ' +
+        'removeformat | help',
+        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
+        
+        file_picker_types: 'file image media',
+        file_picker_callback: (cb, value, meta) => {
+    const input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
+
+    input.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+
+      const reader = new FileReader();
+      reader.addEventListener('load', () => {
+        /*
+          Note: Now we need to register the blob in TinyMCEs image blob
+          registry. In the next release this part hopefully won't be
+          necessary, as we are looking to handle it internally.
+        */
+        const id = 'blobid' + (new Date()).getTime();
+        const blobCache =  tinymce.activeEditor.editorUpload.blobCache;
+        const base64 = reader.result.split(',')[1];
+        const blobInfo = blobCache.create(id, file, base64);
+        blobCache.add(blobInfo);
+
+        /* call the callback and populate the Title field with the file name */
+        cb(blobInfo.blobUri(), { title: file.name });
+      });
+      reader.readAsDataURL(file);
+    });
+
+    input.click();
+  },
+        
+      });
+      
+
+   
+    </script>
 {% endblock %}

@@ -11,6 +11,7 @@ use App\Repository\GuideRepository;
 use App\Repository\TripRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use PhpParser\Node\Stmt\Echo_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,8 +34,7 @@ class GuideController extends AbstractController
         $guide = new Guide();
         $form=$this->createForm(GuideType::class, $guide);
          $form->handleRequest($request);
-        
-        if($form->isSubmitted() && $form->isValid()){
+        if($form->isSubmitted()){
              // gestion des images
             $pictureguides = $form->get('pictureguides')->getData();
             
@@ -50,7 +50,7 @@ class GuideController extends AbstractController
                 $guide->addPictureGuide($img);
             };
 
-
+            $guide->setDescription($_POST['guideDesc']); // on recupere la desc du guide
             // récuperation des données à partir du formulaire
             $plainPassword = $form["user"]["plainPassword"]->getData();
             $user = $guide->getUser();
@@ -74,6 +74,7 @@ class GuideController extends AbstractController
             //redirection à la page de connexion
             return $this->redirectToRoute('app_login', ['last_username' => $lastUsername, 'error' => $error]);
         }
+        
         
 
         // je l'envoie vers le formulaire d'iscription d'un guide

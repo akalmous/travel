@@ -33,6 +33,13 @@
         {{ form_widget(tripForm.name) }}
 
     </div>
+
+    <div class="mb-3">
+
+        <h6>{{ form_label(tripForm.summary) }}</h6>
+        {{ form_widget(tripForm.summary) }}
+
+    </div>
     <div class="mb-3">
 
         <h6>{{ form_label(tripForm.departureDate) }}</h6>
@@ -52,6 +59,12 @@
 
     </div>
     <div class="mb-3">
+    
+        <h6>{{ form_label(tripForm.arrivedPlace) }}</h6>
+        {{ form_widget(tripForm.arrivedPlace) }}
+
+    </div>
+    <div class="mb-3">
 
         <h6>{{ form_label(tripForm.numberPlaces) }}</h6>
         {{ form_widget(tripForm.numberPlaces) }}
@@ -66,6 +79,11 @@
     <div class="mb-3">
         <h6>Description de prix<h6>
         <textarea name="priceDesc" class="editor" ></textarea>
+    </div>
+
+    <div class="mb-3">
+        <h6> Les Formalités du voyage <h6>
+        <textarea name="formalitie" class="editor" ></textarea>
     </div>
     
     <div class="mb-3">
@@ -104,7 +122,7 @@
     });
 </script>
 
-    <script>
+<script>
       tinymce.init({
         
         selector: '.editor',

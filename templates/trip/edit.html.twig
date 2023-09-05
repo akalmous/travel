@@ -1,0 +1,178 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ajouter un voyage{% endblock %}
+{% form_theme tripForm 'bootstrap_5_layout.html.twig' %}
+{% block header %}
+ <script src="https://cdn.ckeditor.com/ckeditor5/37.0.1/classic/ckeditor.js"></script>
+    {% include 'header.html.twig' %}
+
+{% endblock %}
+{% block body %}
+
+
+    <div class="carousel slide">
+    <div class="carousel-inner">
+     <div class="carousel-item active">
+        <img src="{{ asset('/img/background.png') }}" class="d-block w-100" style="height : 325px" alt="...">
+        <div class="carousel-caption d-none d-md-block">
+            <h5> Modifier votre voyage!!! </h5>
+            <p>Merci de renseigner tout les champs</p>
+        </div>
+    </div>
+    </div>
+    </div>
+
+    <div class="container mt-5">
+    <h1 style ="text-align : center">Modification d'un voyage</h1>
+    {{ form_start(tripForm) }}
+    <form METHOD="POST" action="{{path('edit_trip',{'id': trip.id})}}">
+    
+    <div class="mb-3">
+
+        <h6>{{ form_label(tripForm.name) }}</h6>
+        {{ form_widget(tripForm.name) }}
+
+    </div>
+
+    <div class="mb-3">
+
+        <h6>{{ form_label(tripForm.summary) }}</h6>
+        {{ form_widget(tripForm.summary) }}
+
+    </div>
+    <div class="mb-3">
+
+        <h6>{{ form_label(tripForm.departureDate) }}</h6>
+        {{ form_widget(tripForm.departureDate) }}
+        
+    </div>
+    <div class="mb-3">
+        
+       <h6>{{ form_label(tripForm.returnDate) }}</h6>
+        {{ form_widget(tripForm.returnDate) }}
+
+    </div>
+    <div class="mb-3">
+    
+        <h6>{{ form_label(tripForm.departurePlace) }}</h6>
+        {{ form_widget(tripForm.departurePlace) }}
+
+    </div>
+    <div class="mb-3">
+    
+        <h6>{{ form_label(tripForm.arrivedPlace) }}</h6>
+        {{ form_widget(tripForm.arrivedPlace) }}
+
+    </div>
+    <div class="mb-3">
+
+        <h6>{{ form_label(tripForm.numberPlaces) }}</h6>
+        {{ form_widget(tripForm.numberPlaces) }}
+       
+    </div>
+    <div class="mb-3">
+    
+        <h6>{{ form_label(tripForm.price) }}</h6>
+        {{ form_widget(tripForm.price) }}
+       
+    </div>
+    <div class="mb-3">
+        <h6>Description de prix<h6>
+        <textarea name="priceDesc" class="editor" >{{trip.priceDesc}}</textarea>
+    </div>
+
+    <div class="mb-3">
+        <h6> Les Formalités du voyage <h6>
+        <textarea name="formalitie" class="editor" >{{trip.formalitie}}</textarea>
+    </div>
+    
+    <div class="mb-3">
+        <h6>Description du voyage<h6>
+        <textarea name="description" class="editor" >{{trip.description}}</textarea>
+
+    </div>
+    
+    <div class="mb-3">
+    
+        
+        <h6>{{ form_label(tripForm.pictures) }}</h6>
+        {{ form_widget(tripForm.pictures) }}
+       
+    </div>
+    
+    
+    </div>
+    <div style ="text-align: center;" class="container">
+    <button type="submit" style =" width : 200px; text-align: center; " class=" btn btn-secondary">Ajouter</button>
+       </div>
+    
+        
+    <br>
+    
+
+</form>
+{{ form_end(tripForm) }}
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // you may need to change this code if you are not using Bootstrap Datepicker
+        $('.js-datepicker').datepicker({
+            format: 'yyyy-mm-dd'
+        });
+    });
+</script>
+
+<script>
+      tinymce.init({
+        
+        selector: '.editor',
+        language: 'fr_FR',
+        language_url: './trip/fr_FR',
+        plugins: [
+            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+            'insertdatetime', 'media','help', 'wordcount'
+        ],
+        toolbar: 'undo redo | blocks | ' +
+        'bold italic backcolor | alignleft aligncenter ' +
+        'alignright alignjustify | bullist numlist outdent indent | ' +
+        'removeformat | help',
+        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
+        
+        file_picker_types: 'file image media',
+        file_picker_callback: (cb, value, meta) => {
+    const input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
+
+    input.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+
+      const reader = new FileReader();
+      reader.addEventListener('load', () => {
+        /*
+          Note: Now we need to register the blob in TinyMCEs image blob
+          registry. In the next release this part hopefully won't be
+          necessary, as we are looking to handle it internally.
+        */
+        const id = 'blobid' + (new Date()).getTime();
+        const blobCache =  tinymce.activeEditor.editorUpload.blobCache;
+        const base64 = reader.result.split(',')[1];
+        const blobInfo = blobCache.create(id, file, base64);
+        blobCache.add(blobInfo);
+
+        /* call the callback and populate the Title field with the file name */
+        cb(blobInfo.blobUri(), { title: file.name });
+      });
+      reader.readAsDataURL(file);
+    });
+
+    input.click();
+  },
+        
+      });
+      
+
+   
+    </script>
+{% endblock %}

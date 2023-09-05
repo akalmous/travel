@@ -44,10 +44,14 @@ class TripRepository extends ServiceEntityRepository
     public function findTripGuide(){
         $qb = $this->createQueryBuilder('t');
         $qb->where("t.guide is not null ");
-        
+        $qb->andwhere("t.archived is null ");
+
+        echo $qb;
         return $qb
             ->getQuery()
             ->getResult();
+
+            
     }
 
 //    /**
@@ -58,9 +62,8 @@ class TripRepository extends ServiceEntityRepository
     {
         
         $qb = $this->createQueryBuilder('t');
-        $qb
-            ->where('t.name  LIKE :searchBar')
-            ->where("t.guide is not null ");
+        $qb->where("t.archived is null ");
+         $qb->andwhere("t.guide is not null ");
             
 
             
@@ -93,25 +96,26 @@ class TripRepository extends ServiceEntityRepository
                 $qb->andWhere('t.duration <= :duration')
                 ->setParameter('duration',  $duration );
             }
-
+            
+            
             if ($guide) {
-              $qb->andWhere('t.guide = :guide')
+              
+              $qb->andWhere('t.guide IN (:guide)')
                 ->setParameter('guide',  $guide );
                 # code...
            }
             
-           
-            
-         
+        
 
-           
+        
 
 
             
         
         echo($qb);
-        echo("      TEST!!");
-        echo($guide);
+        // echo("      TEST!!");
+        //var_dump($guide);
+        
         return $qb
             ->getQuery()
             ->getResult();

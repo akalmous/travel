@@ -17,9 +17,10 @@ class GuideType extends AbstractType
     {
         $builder
         ->add('user',  RegistrationFormType::class)
-        ->add('description', TextareaType::class,[
-            'help'=>"Décrivez-vous en quelques lignes : vos passions, les langues que vous parlez, vos voyages ...."
-        ])
+        //->add('description', TextareaType::class,[
+        //   'help'=>"Décrivez-vous en quelques lignes : vos passions, les langues que vous parlez, vos voyages ...."
+        //])
+        
         ->add('pictureguides', FileType::class,[
                 'label' => 'Importer des images',
                 'multiple' => true,

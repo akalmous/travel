@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Image;
 
@@ -18,24 +19,38 @@ class TripFormType extends AbstractType
         $builder
             ->add('name', null,
             [
-                'label'=>"Nom du voyage", 
+                'label'=>"Nom du voyage",
+                'row_attr' => ['autocomplete' => false,],
             ],
             )
             ->add('departureDate', DateType :: class, [
                 'widget' => 'single_text',
-                'label'=> "Date de départ"
+                'label'=> "Date de départ",
+                
+                ]
+            )
+            ->add('departureDate', DateType :: class, [
+                'widget' => 'single_text',
+                'label'=> "Date de départ",
                 
                 ]
             )
             ->add('returnDate', DateType :: class, [
                 'widget' => 'single_text',
-                'label'=> "Date de retour"
+                'label'=> "Date de retour",
                 
                 ]
             )
             ->add('departurePlace', null,
             [
-                'label'=>"Place de départ", 
+                'label'=>"lieu de départ", 
+            ],
+            )
+
+            ->add('arrivedPlace', TextType::class,
+            [
+                'label'=>"lieu d'arrivée", 
+                
             ],
             )
 
@@ -50,6 +65,11 @@ class TripFormType extends AbstractType
             [
                 'label'=>"Le prix", 
             ],
+            )
+            ->add('summary', TextareaType::class,[
+                'help'=>"Résumez le voyage en quelques lignes.",
+                'label'=>"Résumé du voyage",
+            ]
             )
             
             

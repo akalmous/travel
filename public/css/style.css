@@ -28,7 +28,7 @@
 
 .fa-solid{
         
-        
+        color : #76966a !important;
         cursor: pointer;
         user-select: none;
 }
@@ -87,12 +87,14 @@
         
         z-index: 1;
         border-radius: 15px;
-        margin-left: 40px;
+       
         left: 0;
-        background-color: #d2c9c9;
+        background-color: #dcedc8;
         overflow-x: hidden;
         
         padding-top: 20px;
+        justify-content: center!important; 
+        margin: 0 auto;
 }
       
 #sidenava {
@@ -109,7 +111,7 @@
 
 #like{
 
-        color: red;
+        color: #76966a;
         font-size: 30px;
 
 }
@@ -136,11 +138,15 @@
 #myNumber{
         width: 25px;
         text-align: center;
+        border-radius: 0.375rem;
+        border-color: #76966a;
 }
 
 #myNumberchildren{
         width: 25px;
         text-align: center; 
+        border-radius: 0.375rem;
+        border-color: #76966a;
 }
 
 #myform {
@@ -167,4 +173,150 @@
 
 
     }
-    
+.form-check-input:checked {
+        background-color: grey;
+        border-color: grey;
+}
+
+#txth2{
+        margin-top :150px;
+}
+
+#btnfiltrer{
+        background-color: #76966a;
+        border-color: #76966a;
+}
+
+#small{
+        color :  #76966a !important;
+}
+
+#search{
+
+        color: white !important ;
+}
+#flexCheckChecked {
+        background-color: #76966a;
+        border-color: #76966a;
+    }
+
+#myTab{
+        background-color: #dcedc8;
+}
+#detailstravel{
+        background-color: #dcedc8;
+        text-align: justify;
+        border-radius: 12px;
+}
+
+#buttonReserver{
+        background-color: #76966a;
+        border-color: #76966a;
+}
+
+#description img{
+        max-width: 100%;
+  height: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  
+}
+
+#formalites{
+        color :#76966a;
+}
+#successh1 {
+        color: #88B04B;
+        font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+        font-weight: 900;
+        font-size: 40px;
+        margin-bottom: 10px;
+      }
+#successp {
+        color: #404F5E;
+        font-family: "Nunito Sans", "Helvetica Neue", sans-serif;
+        font-size:20px;
+        margin: 0;
+      }
+#successi {
+
+      margin : 0 auto;
+      color: #9ABC66;
+      font-size: 250px;
+      margin-left:-15px;
+    }
+#success {
+      background: white;
+      padding: 60px;
+      border-radius: 4px;
+      box-shadow: 0 2px 3px #C8D0D8;
+      display: inline-block;
+      margin: 0 auto;
+    }
+
+    #modalh1{
+        color : #76966a
+    }
+
+    #down{
+        color: #76966a;
+        font-size: 20px;
+        display: inline;
+        font-weight: bold
+    }
+#up{
+        color: #76966a;
+        font-size: 20px;
+        display: inline;
+        font-weight: bold
+}
+
+#btnfermer{
+        width: 46%;
+        border-radius: 13px;
+}
+
+#continuer{
+        background-color: #76966a;
+        border: #76966a;
+        border-radius: 12px;
+        width: 50%;
+}
+
+#modal{
+        background-color: #effae1;
+        border-radius: 25px;
+}
+
+#checkout-button{
+        background-color: #76966a;
+        border: #76966a;
+        border-radius: 12px;
+        width: 50%; 
+}
+
+#guidedesc{
+        display: grid;
+}
+
+#guidedescimg{
+        
+                max-width: 100%;
+          height: auto;
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+          
+        
+}
+#btnreserver{
+        background-color: #76966a;
+       width : 15%; 
+       border-radius: 15px;
+       border-color: #76966a;
+}
+
+#successmsg{
+     background-color: #dcedc8;   
+}

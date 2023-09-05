@@ -35,6 +35,7 @@ class TripController extends AbstractController
                  $request->query->get('dateDate'),
                  $request->query->get('duration'),
                  $request->query->get('guide'),
+                 
             );
             
             
@@ -58,8 +59,8 @@ class TripController extends AbstractController
     {
         $searchBar='0';
         $searchBar=$request->query->get('searchBar');
-        var_dump($searchBar);
-        dump('tesr ' + $searchBar);
+        //var_dump($searchBar);
+        //dump('tesr ' + $searchBar);
         //$answers = $tripRepository->findBy($request->query->get('q'));
         return $this->render('trip/index.html.twig',[$searchBar]);
     }
@@ -81,7 +82,7 @@ class TripController extends AbstractController
 
             
             $pictures = $form->get('pictures')->getData();
-            var_dump($pictures);
+            //var_dump($pictures);
             // On boucle sur les images
             foreach($pictures as $picture){
                 // On génère un nouveau nom de fichier
@@ -96,8 +97,6 @@ class TripController extends AbstractController
                 // On crée l'image dans la base de données
                 $img = new Picture();
                 $img->setName($fichier);
-                echo('test');
-                echo($fichier);
                 $trip->addPicture($img);
             }
             
@@ -110,16 +109,20 @@ class TripController extends AbstractController
             $trip->setDuration($interval->format('%a'));
             $trip->setDescription($_POST['description']);
             $trip->setPriceDesc($_POST['priceDesc']);
+            $trip->setArchived(FALSE);
+            $trip->setFormalitie($_POST['formalitie']);
             $entityManager->clear();
             $entityManager->persist($trip);
             $entityManager->flush();
             // ... perform some action, such as saving the task to the database
 
-            
+            $this->addFlash('success', 'Le voyage a bien été ajouté !');
+            return $this->redirectToRoute('all_trip');
             }
-             return $this->render('trip/add.html.twig', [
-            'controller_name' => 'TripController', 'tripForm' => $form->createView(),'trips1' => $tripRepository->findTripGuide(),'guides'=>$guideRepository->findAll(), 
-        ]);
+            
+            return $this->render('trip/add.html.twig', [
+                'controller_name' => 'TripController', 'tripForm' => $form->createView(),'trips1' => $tripRepository->findTripGuide(),'guides'=>$guideRepository->findAll(),
+            ]);
     }
 
 
@@ -134,11 +137,38 @@ class TripController extends AbstractController
         ]);
     }
 
-    #[Route('/', name: 'edit_trip')]
-    public function action(): Response
+    #[Route('/edit/{id}', name: 'edit_trip')]
+    public function editTrip($id ,EntityManagerInterface $em, TripRepository $tripRepository, Request $request): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        return $this->render('template.html.twig');
+        $trip = $tripRepository->findOneBy(['id'=>$id]);
+
+        $form = $this->createForm(TripFormType::class, $trip)->handleRequest($request);
+        if ($form->isSubmitted()){
+
+            $datedepart = $form->get('departureDate')->getData();
+            $dateretour= $form->get('returnDate')->getData();
+            $interval = $datedepart->diff($dateretour);
+            
+            
+            $trip->setDuration($interval->format('%a'));
+            $trip->setDescription($_POST['description']);
+            $trip->setPriceDesc($_POST['priceDesc']);
+            $trip->setFormalitie($_POST['formalitie']);
+            $em->persist($trip);
+            $em->flush();
+            $this->addFlash('success','le voyage a bie été modifié');
+        }
+        return $this->render('trip/edit.html.twig',['tripForm'=>$form->createView(), 'trip'=>$trip]);
+    }
+
+    #[Route('/delete/{id}', name: 'delete_trip')]
+    public function action($id, Request $request, TripRepository $tripRepository, EntityManagerInterface $em): Response
+    {
+        $trip = $tripRepository->findOneBy(['id'=>$id]);
+        $trip->setArchived(TRUE);
+        $em->flush();
+        return $this->redirectToRoute('all_trip');
     }
 
 

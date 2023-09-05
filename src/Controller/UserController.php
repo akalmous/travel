@@ -26,16 +26,17 @@ class UserController extends AbstractController
         $user = $this->getUser();
         $userRole = $user->getRoles();
         
-        if ($userRole == ["ROLE_USER"]) {
-            var_dump($userRole);
-            var_dump('test');
+        if ($userRole == ["ROLE_USER"] || $userRole == ["ROLE_ADMIN","ROLE_USER"] ) {
+            //var_dump($userRole);
+            //var_dump('test');
             $form = $this->createForm(RegistrationFormType::class, $user)->handleRequest($request);
         
             if ($form->isSubmitted()) {
                 $em->persist($user);
                 $em->flush();
+                $this->addFlash('success', 'Vos informations personnelles ont bien été modifiés ');
             }
-            var_dump($userRole);
+            //var_dump($userRole);
             
             return $this->render('user/index.html.twig', [
                 'registrationForm' => $form->createView(),
@@ -48,19 +49,23 @@ class UserController extends AbstractController
             $userId = $this->getUser()->getId();
         
             $guide = $guideRepository->findOneBy(['user'=> $userId]);
-
+            
             $form = $this->createForm(GuideType::class, $guide)->handleRequest($request);
             if ($form->isSubmitted()) {
+                $guide->setDescription($_POST['guideDesc']);
                 $em->persist($user);
                 $em->flush();
+
+                $this->addFlash('success', 'Vos informations personnelles ont bien été modifiés ');
+                
             }
     
             return $this->render('user/index.html.twig', [
-                'registrationForm' => $form->createView(),
+                'registrationForm' => $form->createView(), 'guide'=>$guide
             ]);
         }
 
-        return $this->render('base.html.twig',["test"]);
+        return $this->render('base.html.twig',[]);
 
         
         

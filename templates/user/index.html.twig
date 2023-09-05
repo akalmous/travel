@@ -2,6 +2,11 @@
 
 {% block title %}Hello UserController!{% endblock %}
 {% form_theme registrationForm 'bootstrap_5_layout.html.twig' %}
+{% block header %}
+ <script src="https://cdn.ckeditor.com/ckeditor5/37.0.1/classic/ckeditor.js"></script>
+    {% include 'header.html.twig' %}
+
+{% endblock %}
 {% block body %}
 <style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
@@ -53,21 +58,16 @@
             }) }}
             
         </div>
-        
-    
-
     
 
     <div class="mb-3 ">
-        {{ form_row(registrationForm.description, {
-            label: "Description de votre profil"
-        }) }}
-   
+        <p>Desciption du guide</p>
+        <textarea name="guideDesc" class="editor">{{guide.description}}</textarea>
     </div>
 
     {% elseif is_granted('ROLE_USER') %} 
         <div class="mb-3">
-        {{ form_row(guideForm.firstName , {
+        {{ form_row(registrationForm.firstName , {
             attr : {
                 type : 'mail',
                 class : 'form-control',
@@ -78,7 +78,7 @@
     </div>
 
     <div class="mb-3">
-        {{ form_row(guideForm.lastName , {
+        {{ form_row(registrationForm.lastName , {
             attr : {
                 class : 'form-control'
             }
@@ -87,7 +87,7 @@
     </div>
 
     <div class="mb-3">
-        {{ form_row(guideForm.tel , {
+        {{ form_row(registrationForm.tel , {
             attr : {
                 class : 'form-control'
             }
@@ -96,7 +96,7 @@
     </div>
 
     <div class="mb-3">
-            {{ form_row(guideForm.email , {
+            {{ form_row(registrationForm.email , {
                 attr : {
                     class : 'form-control'
                 }
@@ -111,7 +111,9 @@
     
     {% endif %}
         
-        <button type="submit" class="btn btn-primary">Modifier </button>
+        <div style ="text-align: center;" class="container">
+    <button type="submit" style =" width : 200px; text-align: center; " class=" btn btn-secondary">Modifier</button>
+       </div>
         {{ form_end(registrationForm, {'render_rest': false}) }}
         <br>
         <div class="container mb-5">
@@ -122,4 +124,58 @@
         {% endif %}
         </div>
 </div>
+
+<script>
+      tinymce.init({
+        
+        selector: '.editor',
+        language: 'fr_FR',
+        language_url: './trip/fr_FR',
+        plugins: [
+            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+            'insertdatetime', 'media','help', 'wordcount'
+        ],
+        toolbar: 'undo redo | blocks | ' +
+        'bold italic backcolor | alignleft aligncenter ' +
+        'alignright alignjustify | bullist numlist outdent indent | ' +
+        'removeformat | help',
+        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
+        
+        file_picker_types: 'file image media',
+        file_picker_callback: (cb, value, meta) => {
+    const input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/*');
+
+    input.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+
+      const reader = new FileReader();
+      reader.addEventListener('load', () => {
+        /*
+          Note: Now we need to register the blob in TinyMCEs image blob
+          registry. In the next release this part hopefully won't be
+          necessary, as we are looking to handle it internally.
+        */
+        const id = 'blobid' + (new Date()).getTime();
+        const blobCache =  tinymce.activeEditor.editorUpload.blobCache;
+        const base64 = reader.result.split(',')[1];
+        const blobInfo = blobCache.create(id, file, base64);
+        blobCache.add(blobInfo);
+
+        /* call the callback and populate the Title field with the file name */
+        cb(blobInfo.blobUri(), { title: file.name });
+      });
+      reader.readAsDataURL(file);
+    });
+
+    input.click();
+  },
+        
+      });
+      
+
+   
+    </script>
 {% endblock %}

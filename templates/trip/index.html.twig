@@ -12,7 +12,8 @@
 
 {% set maxValue = 0 %}
 {% set minValue = 99999999999 %}
-
+{{ dump(trips1) }}
+{{ dump(trips) }}
 {% for trip in trips1 %} 
     {% set maxValue = max(trip.price, maxValue) %}
     {% set minValue = min(trip.price, minValue) %}
@@ -37,7 +38,7 @@
             <div class="sidenav">
                 <div  class="container">
                     <form action="">
-                        <button class='btn btn-secondary btn-block mb-3' type ="submit" style="width : 100%" >Filtrer</button>
+                        <button class='btn btn-secondary btn-block mb-3' id="btnfiltrer" type ="submit" style="width : 100%" >Filtrer</button>
                         <h5>Le prix </h5>
                             <input id="myRange" 
                                 min="{{minValue}}" 
@@ -53,7 +54,7 @@
                         </h6>
 
 
-                    </div>
+                    
 
 
                    
@@ -63,8 +64,8 @@
                     
 
                     <div class="container input-group  d-flex mt-3">
-                        <input class="form-control" style="width : 70%" type="search" placeholder="Rechercher" name="searchBar">
-                        <button class="btn btn-outline-secondary"  type="submit"><i style="color : black" class="fa-solid fa-magnifying-glass"></i></button>
+                        <input class="form-control" style="width : 70%"  type="search" placeholder="Rechercher" name="searchBar">
+                        <button class="btn btn-outline-secondary" id="btnfiltrer" type="submit"><i style="color : black" id="search" class="fa-solid fa-magnifying-glass"></i></button>
                         
                     </div>
                     
@@ -80,13 +81,18 @@
                     <h5>Liste des guides</h5>
                     <div class="list-group-flush">
                     {% for guide in guides %}
-                        
+                    
+                    
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="guide" value="{{guide.id}}" id="flexCheckChecked" checked>
-                         {% for pictureGuide in guide.pictureGuides %}
-                                <img src="{{ asset('/uploads/'~pictureGuide.name) }}" class="imgGuide">
-                        {% endfor %}
-                        <small class="form-check-label" for="flexCheckChecked">{{guide.user.firstName}} {{ guide.user.lastName}}</small>
+                        <ul class="list-group">
+                            <label class="list-group-item">
+                            <input style="display: inline-block; vertical-align: middle; cursor: pointer;" class="form-check-input me-1" type="checkbox" name="guide[]" value="{{guide.id}}" id="flexCheckChecked" checked>
+                                {% for pictureGuide in guide.pictureGuides %}
+                                        <img src="{{ asset('/uploads/'~pictureGuide.name) }}" class="imgGuide">
+                                {% endfor %}
+                                <label class="form-check-label" for="flexCheckChecked">{{guide.user.firstName}} {{ guide.user.lastName}}</label>
+                            </label>
+                        </ul>
                         
                     </div>
                         
@@ -108,8 +114,8 @@
 
 
                     </div>
-                </form>
-
+                    </form>
+                </div>
             </div>
         </div>
     
@@ -122,7 +128,7 @@
                                 <h4>Aucun résulat pour votre recherche.</h4>
                         {% else %}
                         {% for trip in trips %}
-                            <div class="card mb-5" style="width: 800px; height : 250px">
+                            <div class="card mb-5" style="width: 900px; height : 250px; justify-content: center!important; margin: 0 auto;">
                                 <div class="row">
                                     <div class="col-md-5">
                                         {% for picture in trip.pictures | slice(0, 1) %}
@@ -134,12 +140,12 @@
                                         <div class="card-body">
 
                                             <div class=" d-flex w-100 justify-content-between"> 
-                                                <small class="text-muted">{{trip.departurePlace}}</small> 
-                                                <small class="text-muted">{{trip.price}}€</small>
+                                                <small id="small" class="text-muted">{{trip.arrivedPlace}}</small> 
+                                                <small id="small" class="text-muted">{{trip.price}}€</small>
                                             </div>
 
                                             <h5 class="card-title mt-2">{{ trip.name }}</h5>
-                                            <div id ="desc" class="card-text">{{ trip.description|raw  }} </div>
+                                            <div id ="desc" class="card-text">{{ trip.summary|raw  }} </div>
                                             <p class="card-text"><small class="text-muted">Date de départ  {{ trip.departureDate |date('d-m-Y') }}</small>
                                             <br>
 
@@ -151,12 +157,19 @@
                                                     <img  src="{{ asset('/uploads/'~pictureGuide.name) }}" class="imgGuide" >
                                                 {% endfor %}
                                                 
-                                                <small class="text-muted">{{trip.guide.user.firstName}}</small> 
+                                                <small id="small" class="text-muted">{{trip.guide.user.firstName}}</small> 
                                             </div>
                                             
                                             <div class="position-absolute bottom-1 end-0" style="margin-right : 15px;">
                                                 <a href="{{ path('show_trip', {'id': trip.id}) }}"><small>En savoir plus</small></a>
+                                                {% if is_granted('ROLE_ADMIN') and trip.archived == FALSE -%}
+                                                <a href="{{ path('delete_trip', {'id': trip.id}) }}"><i class="fa-regular fa-trash-can"></i></a>
+                                                    
+                                                {% elseif is_granted('ROLE_USER') -%}
+                                                
                                                 <i  onclick="fav(this)" class="fa-regular fa-heart"></i>
+
+                                                {% endif %}
                                             </div>
 
                                         </div>   
@@ -171,12 +184,25 @@
             </div> 
         </div>
     </div>
- 
+
 
  <style>
  .fa-solid{
         
         color : red;
+}
+.form-check-input:checked {
+    background-color: grey;
+    border-color: grey;
+}
+
+.form-check {
+    
+    padding-left: 0px ;
+}
+.card.mb-5 {
+    justify-content: center!important;
+    margin: 0 auto;
 }
 
  </style>

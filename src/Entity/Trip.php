@@ -57,6 +57,22 @@ class Trip
     #[ORM\OneToMany(mappedBy: 'trip', targetEntity: Booking::class)]
     private Collection $bookings;
 
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $arrivedPlace = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $summary = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $formalitie = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $archived = null;
+
+   
+
+    
+
     
 
     
@@ -264,6 +280,55 @@ class Trip
 
         return $this;
     }
+
+    public function getArrivedPlace(): ?string
+    {
+        return $this->arrivedPlace;
+    }
+
+    public function setArrivedPlace(string $arrivedPlace): self
+    {
+        $this->arrivedPlace = $arrivedPlace;
+
+        return $this;
+    }
+
+    public function getSummary(): ?string
+    {
+        return $this->summary;
+    }
+
+    public function setSummary(string $summary): self
+    {
+        $this->summary = $summary;
+
+        return $this;
+    }
+
+    public function getFormalitie(): ?string
+    {
+        return $this->formalitie;
+    }
+
+    public function setFormalitie(string $formalitie): self
+    {
+        $this->formalitie = $formalitie;
+
+        return $this;
+    }
+
+    public function isArchived(): ?bool
+    {
+        return $this->archived;
+    }
+
+    public function setArchived(?bool $archived): self
+    {
+        $this->archived = $archived;
+
+        return $this;
+    }
+
 
     
 

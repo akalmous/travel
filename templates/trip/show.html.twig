@@ -25,7 +25,7 @@
                 <div class="justify-content-end carousel-caption d-none d-md-block" style="text-align : right">
                     
                     
-                    <a class="btn btn-secondary" style="width : 15%; border-radius: 15px" data-bs-toggle="modal" href="#exampleModalToggle"  role="button">Réserver</a>
+                    <a class="btn btn-secondary" id="btnreserver" data-bs-toggle="modal" href="#exampleModalToggle"  role="button">Réserver</a>
                     <i  id="like" onclick="fav(this)" class="fa-regular fa-heart"></i>
                 </div>
             </div>
@@ -54,9 +54,9 @@
 <form action="{{path('app_stripe_charge',{'id': trip.id})}}" method="POST" needs-validation>
 <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
+    <div id ="modal" class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Les informations personnelles</h1>
+        <h1 class="modal-title fs-5" id="modalh1">Les informations personnelles</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
         <div class="modal-body">
@@ -90,7 +90,7 @@
                         </div>
                     
                 </div>
-        <h6>Les informations personelles</h6>
+        <h6 id="modalh1">Les informations personelles</h6>
         <div class="container">
         
         <label class="form-label">Nom</label>
@@ -104,7 +104,7 @@
 
       </div>
       <div class="modal-footer">
-      <a type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</a>
+      <a type="button" id ="btnfermer" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</a>
         <a class="btn btn-primary disabled" data-bs-target="#exampleModalToggle2" onclick="verify" id="continuer" data-bs-toggle="modal" >Continuer</a>
         
         
@@ -114,14 +114,14 @@
 </div>
 <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
+    <div id ="modal" class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Les informations personnelles</h1>
+        <h1 class="modal-title fs-5" id="modalh1">Les informations personnelles</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class=" modal-body">
         <div class="container">
-        <H5>Adresse</H5>
+        <H5 id="modalh1">Adresse</H5>
             <label class="form-label">Adresse</label>
             <input type="text" class="mb-2 form-control" name="adress" id="" required>
             <label class="form-label">Code postale</label>
@@ -132,7 +132,7 @@
       </div>
       <div class="modal-footer">
         
-        <input type="button" class="btn btn-secondary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal" value="Retour"></input>
+        <input type="button" id="btnfermer" class="btn btn-secondary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal" value="Retour"></input>
         <button name="submit" class="btn btn-primary" type="submit" id="checkout-button">Checkout</button>
         
       </div>
@@ -146,7 +146,10 @@
 
 
 
-    <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
+    
+
+    <div class="container" id="detailstravel">
+    <ul class="nav nav-tabs justify-content-center mt-5" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
             <button class="nav-link active" id="desc-tab" data-bs-toggle="tab" data-bs-target="#desc-tab-pane" type="button" role="tab" aria-controls="desc-tab-pane" aria-selected="true">Description</button>
         </li>
@@ -154,17 +157,16 @@
             <button class="nav-link" id="prix-tab" data-bs-toggle="tab" data-bs-target="#prix-tab-pane" type="button" role="tab" aria-controls="prix-tab-pane" aria-selected="false">prix</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="duree-tab" data-bs-toggle="tab" data-bs-target="#duree-tab-pane" type="button" role="tab" aria-controls="duree-tab-pane" aria-selected="false">Durée</button>
+            <button class="nav-link" id="duree-tab" data-bs-toggle="tab" data-bs-target="#duree-tab-pane" type="button" role="tab" aria-controls="duree-tab-pane" aria-selected="false">Formalités</button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="guide-tab" data-bs-toggle="tab" data-bs-target="#guide-tab-pane" type="button" role="tab" aria-controls="guide-tab-pane" aria-selected="false" >Guide</button>
         </li>
     </ul>
-
-    
     <div class="tab-content" id="myTabContent">
+    
         <div class="tab-pane fade show active" id="desc-tab-pane" role="tabpanel" aria-labelledby="desc-tab" tabindex="0">
-                <div class="container my-5">
+                <div id ="description" class="container my-5">
                     
                     <div>{{trip.description|raw}}</div>
             </div>
@@ -176,22 +178,27 @@
             </div>
         </div>
         <div class="tab-pane fade" id="duree-tab-pane" role="tabpanel" aria-labelledby="duree-tab" tabindex="0">
-                <div class="container my-5">
+                <div id ="description" class="container my-5">
+                    <p>{{trip.formalitie|raw}}</p>
                     <h4> Date de départ : {{trip.departureDate | date('d-m-Y')}} </h4>
                     <h4> Date de retour : {{trip.returnDate | date('d-m-Y')}}</h4>
                 </div>
         </div>
         <div class="tab-pane fade" id="guide-tab-pane" role="tabpanel" aria-labelledby="guide-tab" tabindex="0">
-                <div class="container my-5">
-                    <h6>Nom du guide : {{trip.guide.user.firstName}} {{trip.guide.user.lastName}}</h6>
-                    <h6>Le profil du guide </h6>{% for pictureGuide in trip.guide.pictureGuides %}
-                    <img src="{{ asset('/uploads/'~pictureGuide.name) }}" style="border-radius: 50%;  border: 0.2px solid black; width :50px" >
+                <div id ="guidedesc" class="justify-content-center container my-5">
+                    <h5 class= "my-5" style ="text-align : center">Présentation du guide</h5>
+                    {% for pictureGuide in trip.guide.pictureGuides %}
+                    <img src="{{ asset('/uploads/'~pictureGuide.name) }}" id="guidedescimg" style="border-radius: 50%;  border: 0.2px solid black; height :200px" >
                         {% endfor %}
-                    <h6 >{{trip.guide.description}}</h6> 
+                    <h6 class="mt-5">Nom du guide : <span style="color : #76966a"> {{trip.guide.user.firstName}} {{trip.guide.user.lastName}}</span></h6>
+                    <h6>Le profil du guide : </h6>
+                    
+                    <p>{{trip.guide.description}}</p> 
                                     
                     
             
         </div>
+    </div>
     </div>
  <script>
  function up(max) {
@@ -265,5 +272,12 @@ function verify(){
 
 }
 </script>
-
+<style>
+.form-label{
+    font-size: 13px;
+}
+.form-control{
+    border-color : #76966a;
+}
+</style>
 {% endblock %}
