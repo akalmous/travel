@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}ajouter un voyage{% endblock %}
+{% block title %}Modifier un voyage{% endblock %}
 {% form_theme tripForm 'bootstrap_5_layout.html.twig' %}
 {% block header %}
  <script src="https://cdn.ckeditor.com/ckeditor5/37.0.1/classic/ckeditor.js"></script>
@@ -96,14 +96,27 @@
     
         
         <h6>{{ form_label(tripForm.pictures) }}</h6>
+        {% for picture in trip.pictures %}
+            
+                <a onclick="document.getElementById('{{picture.id}}').style.display = 'none'"><img src="{{ asset('/uploads/'~picture.name) }}" style="height : 100px; width : 100px"  id ="{{picture.id}}" alt="..."></a>
+            
+                
+            
+            
+            
+        {% endfor %}  
+
+       
+
         {{ form_widget(tripForm.pictures) }}
+        <div id="box" name="box" >ik</div>
        
     </div>
     
     
     </div>
     <div style ="text-align: center;" class="container">
-    <button type="submit" style =" width : 200px; text-align: center; " class=" btn btn-secondary">Ajouter</button>
+    <button type="submit" style =" width : 200px; text-align: center; " class=" btn btn-secondary">Modifier</button>
        </div>
     
         
@@ -141,15 +154,15 @@
         
         file_picker_types: 'file image media',
         file_picker_callback: (cb, value, meta) => {
-    const input = document.createElement('input');
-    input.setAttribute('type', 'file');
-    input.setAttribute('accept', 'image/*');
+        const input = document.createElement('input');
+        input.setAttribute('type', 'file');
+        input.setAttribute('accept', 'image/*');
 
-    input.addEventListener('change', (e) => {
-      const file = e.target.files[0];
+        input.addEventListener('change', (e) => {
+        const file = e.target.files[0];
 
-      const reader = new FileReader();
-      reader.addEventListener('load', () => {
+        const reader = new FileReader();
+        reader.addEventListener('load', () => {
         /*
           Note: Now we need to register the blob in TinyMCEs image blob
           registry. In the next release this part hopefully won't be
@@ -163,8 +176,8 @@
 
         /* call the callback and populate the Title field with the file name */
         cb(blobInfo.blobUri(), { title: file.name });
-      });
-      reader.readAsDataURL(file);
+        });
+        reader.readAsDataURL(file);
     });
 
     input.click();
@@ -175,4 +188,39 @@
 
    
     </script>
+    <script>
+        const fileInput = document.getElementById("trip_form_pictures");
+        const box = document.getElementById("box");
+
+        fileInput.addEventListener('change', event =>{
+            if (fileInput.files.length > 0) {
+                for(const file of fileInput.files){
+                    const previewImage = document.createElement('img')
+                    previewImage.src = URL.createObjectURL(file);
+                    previewImage.style.height = '150px';
+                    previewImage.style.width = '150px';
+                    previewImage.setAttribute('name','imgtest');
+                     previewImage.onload = function handleLoad() {
+                        URL.revokeObjectURL(previewImage.src);
+                    };
+                    box.appendChild(previewImage);
+                    
+                }
+            }
+
+            
+        })
+
+    </script>
+
+    <script>
+    const divContent = document.getElementById("box").innerHTML;
+    console.log(divContent)
+    const data = {
+        content: divContent
+    }
+
+    
+    </script>
+
 {% endblock %}

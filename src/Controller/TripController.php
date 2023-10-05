@@ -27,25 +27,31 @@ class TripController extends AbstractController
     
     public function index(Request $request, TripRepository $tripRepository, GuideRepository $guideRepository): Response
     {
-            
-            // la barre de recherche
+        
+           if (isset($_POST['btnfiltrer'])){
+
             $tripsfilter = $tripRepository->findByName(
-                $request->query->get('searchBar'),
-                 $request->query->get('price'),
-                 $request->query->get('dateDate'),
-                 $request->query->get('duration'),
-                 $request->query->get('guide'),
-                 
+                $_POST['searchBar'],
+                $_POST['price'],
+                $_POST['dateDate'],
+                $_POST['duration'],
+                $_POST['guide'],
+                
             );
-            
+           }
+          else {
+           $tripsfilter = $tripRepository->findTripGuide();
+           echo("et");
+        
+        } 
             
         //$searchBar=$request->query->get('searchBar');
         //$tripsfilter = $tripRepository->findByName($searchBar);
 
         
-        // on renvoir que les trips avec un guide et toute la liste des  guides 
+        // on renvoie que les trips avec un guide et toute la liste des  guides 
         return $this->render('trip/index.html.twig', [
-            'trips1' => $tripRepository->findTripGuide(),  'trips' => $tripsfilter, 'request'=>$request,'guides'=>$guideRepository->findAll(),
+            'trips1' => $tripRepository->findTripGuide(), 'guides'=>$guideRepository->findAll(),'trips' => $tripsfilter,
             
         ]);
 
@@ -53,6 +59,28 @@ class TripController extends AbstractController
 
         
     }
+
+    #[Route('/test', name: 'filter_trip')]
+    public function actionFiltrer(Request $request,TripRepository $tripRepository,GuideRepository $guideRepository): Response
+    {
+        
+        // la barre de recherche
+        echo($_POST['searchBar']);
+        echo($_POST['price']);
+        echo($_POST['dateDate']);
+        echo($_POST['duration']);
+        var_dump($_POST['guide']);
+        //echo($dateDate);
+        
+        
+        
+        //var_dump($tripsfilter);
+        return $this->render('trip/index.html.twig', [
+             'guides'=>$guideRepository->findAll(),
+            
+        ]);
+    }
+    
 
     #[Route('/', name: 'search_trip')]
     public function searchBar(TripRepository $tripRepository, Request $request) : Response
@@ -67,7 +95,7 @@ class TripController extends AbstractController
 
     
 
-    
+    // fonction pour ajouter un voyage
     #[Route('/new', name: 'new_trip')]
     public function addTrip(Request $request, EntityManagerInterface $entityManager, TripRepository $tripRepository, GuideRepository $guideRepository): Response
     {
@@ -79,7 +107,7 @@ class TripController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
-
+            
             
             $pictures = $form->get('pictures')->getData();
             //var_dump($pictures);
@@ -126,7 +154,7 @@ class TripController extends AbstractController
     }
 
 
-
+    // fonction pour afficher les détails d'un voyage
     #[Route('/show/{id}', name: 'show_trip')]
 
     public function showTrip($id, TripRepository $tripRepository){
@@ -137,15 +165,18 @@ class TripController extends AbstractController
         ]);
     }
 
+
+    //fonction pour modifier un voyage 
     #[Route('/edit/{id}', name: 'edit_trip')]
     public function editTrip($id ,EntityManagerInterface $em, TripRepository $tripRepository, Request $request): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $trip = $tripRepository->findOneBy(['id'=>$id]);
-
+       
         $form = $this->createForm(TripFormType::class, $trip)->handleRequest($request);
         if ($form->isSubmitted()){
 
+            
             $datedepart = $form->get('departureDate')->getData();
             $dateretour= $form->get('returnDate')->getData();
             $interval = $datedepart->diff($dateretour);
@@ -162,9 +193,11 @@ class TripController extends AbstractController
         return $this->render('trip/edit.html.twig',['tripForm'=>$form->createView(), 'trip'=>$trip]);
     }
 
+    // fonction pour archiver un voyage (et non supprimer)
     #[Route('/delete/{id}', name: 'delete_trip')]
     public function action($id, Request $request, TripRepository $tripRepository, EntityManagerInterface $em): Response
-    {
+    {   
+        //
         $trip = $tripRepository->findOneBy(['id'=>$id]);
         $trip->setArchived(TRUE);
         $em->flush();

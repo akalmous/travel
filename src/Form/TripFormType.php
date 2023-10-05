@@ -81,6 +81,7 @@ class TripFormType extends AbstractType
                 'multiple' => true,
                 'mapped' => false,
                 'required' => false,
+                'attr' => ['accept'=>"image/*"],
                  
             ])
         ;

@@ -12,7 +12,7 @@
 
 {% set maxValue = 0 %}
 {% set minValue = 99999999999 %}
-{{ dump(trips1) }}
+
 {{ dump(trips) }}
 {% for trip in trips1 %} 
     {% set maxValue = max(trip.price, maxValue) %}
@@ -37,8 +37,9 @@
         <div class="col-3">
             <div class="sidenav">
                 <div  class="container">
-                    <form action="">
-                        <button class='btn btn-secondary btn-block mb-3' id="btnfiltrer" type ="submit" style="width : 100%" >Filtrer</button>
+                
+                    <form METHOD="POST" action ="{{path('all_trip')}}" >
+                        <button class='btn btn-secondary btn-block mb-3' name ="btnfiltrer" id="btnfiltrer" type ="submit" style="width : 100%" >Filtrer</button>
                         <h5>Le prix </h5>
                             <input id="myRange" 
                                 min="{{minValue}}" 
@@ -164,6 +165,7 @@
                                                 <a href="{{ path('show_trip', {'id': trip.id}) }}"><small>En savoir plus</small></a>
                                                 {% if is_granted('ROLE_ADMIN') and trip.archived == FALSE -%}
                                                 <a href="{{ path('delete_trip', {'id': trip.id}) }}"><i class="fa-regular fa-trash-can"></i></a>
+                                                <a href="{{ path('edit_trip', {'id': trip.id}) }}"><i class="fa-regular fa-pen-to-square"></i></a>
                                                     
                                                 {% elseif is_granted('ROLE_USER') -%}
                                                 

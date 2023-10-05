@@ -46,7 +46,7 @@ class TripRepository extends ServiceEntityRepository
         $qb->where("t.guide is not null ");
         $qb->andwhere("t.archived is null ");
 
-        echo $qb;
+        //echo $qb;
         return $qb
             ->getQuery()
             ->getResult();
@@ -66,21 +66,23 @@ class TripRepository extends ServiceEntityRepository
          $qb->andwhere("t.guide is not null ");
             
 
-            
+            echo($price);
+            echo($searchBar.''. $dateDate);
+
             
             // filtrer par la barre de recherche soit par le nom du voyage ou le nom de la destination
             
             
             if($searchBar){
-                $qb->andwhere('t.departurePlace lIKE :searchBar');
-                $qb->orWhere('t.name  LIKE :searchBar')
+                $qb->andwhere('t.departurePlace lIKE :searchBar or t.name LIKE :searchBar')
+                //$qb->orWhere('t.name  LIKE :searchBar')
                 ->setParameter('searchBar', '%' . $searchBar . '%');
                 ;
             }
             // filtrer par le prix
 
             if ($price) {
-            $qb->andWhere('t.price <= :price ')
+            $qb->andWhere("t.price < :price ")
             ->setParameter('price',  $price );
             }
 
@@ -93,7 +95,7 @@ class TripRepository extends ServiceEntityRepository
             // filter par la durée du voyage
 
             if ($duration) {
-                $qb->andWhere('t.duration <= :duration')
+                $qb->andWhere('t.duration < :duration')
                 ->setParameter('duration',  $duration );
             }
             
@@ -110,12 +112,11 @@ class TripRepository extends ServiceEntityRepository
         
 
 
-            
+           echo($qb->getParameters());
         
-        echo($qb);
         // echo("      TEST!!");
         //var_dump($guide);
-        
+        //echo($qb);
         return $qb
             ->getQuery()
             ->getResult();
