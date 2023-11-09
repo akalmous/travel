@@ -96,25 +96,30 @@
     
         
         <h6>{{ form_label(tripForm.pictures) }}</h6>
+        
+        
+
+        {{ form_widget(tripForm.pictures) }}
+        <div id="box" name="box" >
         {% for picture in trip.pictures %}
-            
-                <a onclick="document.getElementById('{{picture.id}}').style.display = 'none'"><img src="{{ asset('/uploads/'~picture.name) }}" style="height : 100px; width : 100px"  id ="{{picture.id}}" alt="..."></a>
-            
+                <div class="image-container">
+                <img src="{{ asset('/uploads/'~picture.name) }}" class="imageTripEdit" id ="{{picture.id}}" alt="...">
                 
-            
+                
+                </div>
             
             
         {% endfor %}  
 
-       
+        </div>
 
-        {{ form_widget(tripForm.pictures) }}
-        <div id="box" name="box" >ik</div>
+        
        
     </div>
-    
+    <input type="hidden" name="imgForTest" id="imgForTest"></input>
     
     </div>
+
     <div style ="text-align: center;" class="container">
     <button type="submit" style =" width : 200px; text-align: center; " class=" btn btn-secondary">Modifier</button>
        </div>
@@ -188,39 +193,67 @@
 
    
     </script>
-    <script>
-        const fileInput = document.getElementById("trip_form_pictures");
-        const box = document.getElementById("box");
+ <script>
+function Remove(element) {
+    element.parentElement.remove();
+}
 
-        fileInput.addEventListener('change', event =>{
-            if (fileInput.files.length > 0) {
-                for(const file of fileInput.files){
-                    const previewImage = document.createElement('img')
-                    previewImage.src = URL.createObjectURL(file);
-                    previewImage.style.height = '150px';
-                    previewImage.style.width = '150px';
-                    previewImage.setAttribute('name','imgtest');
-                     previewImage.onload = function handleLoad() {
-                        URL.revokeObjectURL(previewImage.src);
-                    };
-                    box.appendChild(previewImage);
-                    
-                }
-            }
+</script>
+<script>
+const fileInput = document.getElementById("trip_form_pictures");
+const box = document.getElementById("box");
+
+
+fileInput.addEventListener('change', event => {
+    if (fileInput.files.length > 0) {
+        box.replaceChildren();
+        for (const file of fileInput.files) {
+            const imageContainer = document.createElement('div');
+            imageContainer.classList.add('image-container'); // Ajoutez une classe pour le style CSS
+
+            const previewImage = document.createElement('img');
+            previewImage.src = URL.createObjectURL(file);
+            previewImage.className = 'imageTripEdit';
+            previewImage.setAttribute('name', 'imgtest');
+            previewImage.onload = function handleLoad() {
+                URL.revokeObjectURL(previewImage.src);
+            };
 
             
-        })
 
-    </script>
+            // Ajouter l'image et la croix de suppression au conteneur
+            imageContainer.appendChild(previewImage);
 
-    <script>
-    const divContent = document.getElementById("box").innerHTML;
-    console.log(divContent)
-    const data = {
-        content: divContent
+            // Ajouter le conteneur à la div "box"
+            box.appendChild(imageContainer);
+            
+        }
+
+        
     }
+});
+</script>
+<script>
+document.getElementById("insertImage").addEventListener("click", insertImage);
+function insertImage() {
+    const imgForTest = document.getElementById("imgForTest");
+const imageContainers = document.querySelectorAll('.image-container')
+const imageData = [];
+            for(container of imageContainers){
+                const imgPictures = container.querySelector('img')
+                imageData.push(imgPictures.outerHTML)
+                
+                console.log('ikrame')
+                
+            }
+            imgForTest.value = JSON.stringify(imageData);
 
-    
-    </script>
+}
+
+
+
+
+</script>
+
 
 {% endblock %}

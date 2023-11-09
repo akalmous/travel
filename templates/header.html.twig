@@ -27,13 +27,13 @@
                     </div>
                 </nav>
 
-                <form action="">
-                    <nav class="navbar navbar-expand-lg ">
+                <form method ="POST" action="{{ path('all_trip')}}">
+                    <nav class="navbar navbar-expand-lg  ">
                         <div class="container  justify-content-center ">
-                        <div class="input-group navbar navbar-expand-lg mt-3">
+                        <div class="input-group navbar navbar-expand-lg mt-1 mb-5">
                         
-                            <input type="text" name="searchBar" class="form-control">
-                            <button class="btn btn-outline-secondary"   type="submit">search</button>
+                        <input type="text" name="searchBar" class="form-control">
+                        <button class="btn btn-outline-secondary " name ="SearchBar"  type="submit" > Rechercher </button>
                         
                         </div>
                         </div>

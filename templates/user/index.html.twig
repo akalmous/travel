@@ -119,6 +119,8 @@
         <div class="container mb-5">
        {% if  is_granted('ROLE_GUIDE')  %}
         <a class="my-4" href="{{ path('tripGuide')}}">Mes voyages</a>
+        {% elseif  is_granted('ROLE_ADMIN')  %}
+        <p></P>
         {% else %}
         <a class="my-4" href="{{ path('user_reservation')}}">Mes réservations</a>
         {% endif %}

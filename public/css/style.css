@@ -320,3 +320,14 @@
 #successmsg{
      background-color: #dcedc8;   
 }
+
+.imageTripEdit{
+        margin: 10px 3px;
+        width: 200PX;
+        height : 200px;
+
+}
+
+.image-container{
+        display: inline;
+}

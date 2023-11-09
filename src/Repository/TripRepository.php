@@ -54,20 +54,38 @@ class TripRepository extends ServiceEntityRepository
             
     }
 
-//    /**
-//     * @return Trip[] Returns an array of Trip objects
-//     */
-    public function findByName($searchBar, $price ,  $dateDate, $duration, $guide)
-    
-    {
+
+    //Barre de recherche
+    public function findByName($searchBar){
         
         $qb = $this->createQueryBuilder('t');
         $qb->where("t.archived is null ");
-         $qb->andwhere("t.guide is not null ");
+        $qb->andwhere("t.guide is not null ");
+        // filtrer par la barre de recherche soit par le nom du voyage ou le nom de la destination
+        $qb->andwhere('t.departurePlace lIKE :searchBar or t.name LIKE :searchBar')
+        //$qb->orWhere('t.name  LIKE :searchBar')
+        ->setParameter('searchBar', '%' . $searchBar . '%');
+       
+        return $qb
+            ->getQuery()
+            ->getResult();
+            
+        }
+
+
+
+//    /**
+//     * @return Trip[] Returns an array of Trip objects
+//     */
+    public function findByFilter($searchBar, $price ,  $dateDate, $duration, $guide){
+        
+        $qb = $this->createQueryBuilder('t');
+        $qb->where("t.archived is null ");
+        $qb->andwhere("t.guide is not null ");
             
 
-            echo($price);
-            echo($searchBar.''. $dateDate);
+        //echo($price);
+        //echo($searchBar.''. $dateDate);
 
             
             // filtrer par la barre de recherche soit par le nom du voyage ou le nom de la destination
@@ -82,7 +100,8 @@ class TripRepository extends ServiceEntityRepository
             // filtrer par le prix
 
             if ($price) {
-            $qb->andWhere("t.price < :price ")
+            $price = intval($price);
+            $qb->andWhere("t.price < :price or t.price = :price")
             ->setParameter('price',  $price );
             }
 
@@ -95,8 +114,9 @@ class TripRepository extends ServiceEntityRepository
             // filter par la durée du voyage
 
             if ($duration) {
-                $qb->andWhere('t.duration < :duration')
-                ->setParameter('duration',  $duration );
+                $duration = intval($duration);
+                $qb->andWhere('t.duration < :duration or t.duration = :duration')
+                ->setParameter('duration', $duration );
             }
             
             
@@ -112,11 +132,11 @@ class TripRepository extends ServiceEntityRepository
         
 
 
-           echo($qb->getParameters());
+           
         
         // echo("      TEST!!");
         //var_dump($guide);
-        //echo($qb);
+       // echo($qb);
         return $qb
             ->getQuery()
             ->getResult();
@@ -125,6 +145,8 @@ class TripRepository extends ServiceEntityRepository
   
     }
     
+
+
 
 //    public function findOneBySomeField($value): ?Trip
 //    {

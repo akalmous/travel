@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Symfony\Component\HttpFoundation\File\File;
 use DateTimeInterface;
 use DateTime ;
 
@@ -29,8 +29,8 @@ class TripController extends AbstractController
     {
         
            if (isset($_POST['btnfiltrer'])){
-
-            $tripsfilter = $tripRepository->findByName(
+           
+            $tripsfilter = $tripRepository->findByFilter(
                 $_POST['searchBar'],
                 $_POST['price'],
                 $_POST['dateDate'],
@@ -39,9 +39,14 @@ class TripController extends AbstractController
                 
             );
            }
+
+           else if(isset($_POST['SearchBar'])) {
+
+            $tripsfilter = $tripRepository->findByName($_POST['searchBar']);
+           }
           else {
            $tripsfilter = $tripRepository->findTripGuide();
-           echo("et");
+           //echo("et");
         
         } 
             
@@ -175,7 +180,50 @@ class TripController extends AbstractController
        
         $form = $this->createForm(TripFormType::class, $trip)->handleRequest($request);
         if ($form->isSubmitted()){
+           ;
 
+            // Persister l'entité principale (dans ce cas, $trip) dans la base de données
+            $em->persist($trip);
+            $em->flush();
+            
+            
+           
+
+            
+
+            
+        if ($form->get('pictures')->getData() != null) {
+            $picturesTrip = $trip->getPictures();
+
+            foreach ($picturesTrip as $picture) {
+                //echo('test');
+                $em->remove($picture);
+                $em->flush();
+             
+            }
+
+            $pictures = $form->get('pictures')->getData();
+            foreach ($pictures as $picture ) {
+                # code...
+          
+            $fichier = md5(uniqid()).'.'.$picture->guessExtension();
+                
+            // On copie le fichier dans le dossier uploads
+            $picture->move(
+                $this->getParameter('images_directory'),
+                $fichier
+            );
+            
+            // On crée l'image dans la base de données
+            $img = new Picture();
+            $img->setName($fichier);
+            $trip->addPicture($img);
+            
+        }
+        
+        }
+
+            
             
             $datedepart = $form->get('departureDate')->getData();
             $dateretour= $form->get('returnDate')->getData();
