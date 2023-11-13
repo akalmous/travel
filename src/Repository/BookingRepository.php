@@ -53,6 +53,21 @@ class BookingRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findByDateBookings(): array
+    {
+         // je récupre l'année en cours afin de filtrer tout les guides inscrits au cours de cette année
+        $year = date("Y");
+        $date = "$year-00-00";
+        return $this->createQueryBuilder('b')
+            ->andWhere("b.creationDate > :date or b.creationDate = :date ")
+            ->setParameter('date',$date)
+            //->orderBy('u.id', 'ASC')
+            //->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 //    /**
 //     * @return Booking[] Returns an array of Booking objects
 //     */

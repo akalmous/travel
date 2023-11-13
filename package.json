@@ -1,10 +1,24 @@
 {
   "dependencies": {
-    "bootstrap-icons": "^1.10.3"
+    "bootstrap-icons": "^1.10.3",
+    "@cubejs-client/core": "^0.31.0",
+    "chart.js": "^4.0.0"
   },
   "devDependencies": {
     "@hotwired/stimulus": "^3.0.0",
     "@symfony/ux-autocomplete": "file:vendor/symfony/ux-autocomplete/assets",
-    "tom-select": "^2.2.2"
+    "tom-select": "^2.2.2",
+    "parcel": "^2.6.2"
+  },
+  
+
+  "name": "chartjs-example",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "dev": "parcel src/index.html",
+    "build": "parcel build src/index.html"
   }
 }
+ 
+

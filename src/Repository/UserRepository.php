@@ -56,20 +56,57 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->save($user, true);
     }
 
-//    /**
-//     * @return User[] Returns an array of User objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('u.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return User[] Returns an array of User objects
+     */
+    public function findByDateUsers($role): array
+    {
+        $year = date("Y");
+        $date = "$year-00-00";
+        
+         $qb = $this->createQueryBuilder('u')
+            ->andWhere('u.roles LIKE :role')
+            ->andWhere("u.creationDate > :date or u.creationDate = :date ")
+            ->setParameter('role', '%' . $role . '%')
+            ->setParameter('date',  $date)
+            //->orderBy('u.id', 'ASC')
+            //->setMaxResults(10)
+            
+
+            
+        ;
+
+        
+        return $qb
+        ->getQuery()
+        ->getResult();
+        
+    }
+
+    /**
+     * @return User[] Returns an array of User objects
+     */
+    public function findByDateGuides($role): array
+    {
+         // je récupre l'année en cours afin de filtrer tout les guides inscrits au cours de cette année
+        $year = date("Y");
+        $date = "$year-00-00";
+        //echo($date);
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.roles LIKE :role')
+            ->andWhere("u.creationDate > :date or u.creationDate = :date ")
+            ->setParameter('date',   $date )
+            ->setParameter('role', '%' . $role . '%')
+            //->orderBy('u.id', 'ASC')
+            //->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+
+        
+    }
+
+    
 
 //    public function findOneBySomeField($value): ?User
 //    {

@@ -1,0 +1,170 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello DashbordController!{% endblock %}
+ 
+
+ {% block body %}
+   
+<div class="container">
+    <h2 style = "text-align : center">DASHBORD DE L'ANNEE EN COURS</h2>
+ </div>
+    <div class="row">
+        <div class="col-6">
+        
+            <canvas class="my-4" id="inscription"></canvas>
+        </div>
+
+        <div class="col-6">
+            <canvas class="my-4" id="reservation" ></canvas>
+        </div>
+   </div>
+  
+   <script>
+   /* globals Chart:false */
+
+(() => {
+  'use strict'
+
+    
+  // Graphs
+
+  const ctx = document.getElementById('inscription')
+  const xValues = ["Guides", "Utlisateurs inscrits"];
+  const yValues = [{{guides}}, {{users}}];
+  // eslint-disable-next-line no-unused-vars
+  const myChart = new Chart(ctx, {
+    type: 'bar',
+    
+    data: {
+      labels: xValues,
+      
+      datasets: [{
+        label: "DASHBORD DES INSCRIPTIONS",
+        data: yValues,
+        lineTension: 0,
+        backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(255, 159, 64, 0.2)',
+        ],
+        borderColor: [
+        'rgb(255, 99, 132)',
+        'rgb(255, 159, 64)',
+        ],
+
+        
+        borderWidth: 1,
+        pointBackgroundColor: '#007bff'
+      }]
+    },
+
+    
+    options: {
+      plugins: {
+        legend: {
+          display: true,
+          
+        },
+        tooltip: {
+          boxPadding: 3
+        }
+      },
+      scales: {
+            y: {
+                title: {
+                    display : true,
+                    text : 'Nombre ',
+
+                    }
+                },
+
+            x: {
+                title: {
+                    display : true,
+                    text : 'test',
+
+                    },
+            }
+            }
+        }
+    
+  })
+})()
+
+   </script>
+
+   <script>
+   /* globals Chart:false */
+
+(() => {
+  'use strict'
+
+    
+  // Graphs
+
+  const ctx = document.getElementById('reservation')
+  const xValues = ["Réservations", "Voyages"];
+  const yValues = [{{bookings}}, {{trips}}];
+  // eslint-disable-next-line no-unused-vars
+  const myChart = new Chart(ctx, {
+    type: 'bar',
+    
+    data: {
+      labels: xValues,
+      
+      datasets: [{
+        label: "DASHBORD DES RESERVATIONS",
+        data: yValues,
+        lineTension: 0,
+        backgroundColor: [
+        'rgba(255, 205, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        
+        ],
+        borderColor: [
+        'rgb(255, 205, 86)',
+        'rgb(75, 192, 192)'
+        ],
+
+        
+        borderWidth: 1,
+        pointBackgroundColor: '#007bff'
+      }]
+    },
+
+    
+    options: {
+      plugins: {
+        legend: {
+          display: true,
+          
+        },
+        tooltip: {
+          boxPadding: 3
+        }
+      },
+      scales: {
+            y: {
+                title: {
+                    display : true,
+                    text : 'Nombre ',
+
+                    }
+                },
+
+            x: {
+                title: {
+                    display : true,
+                    text : 'test',
+
+                    },
+            }
+            }
+        }
+    
+  })
+})()
+
+   </script>
+
+
+{% endblock %}

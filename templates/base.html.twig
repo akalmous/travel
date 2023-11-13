@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,400i,700,900&display=swap" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.2/dist/chart.umd.js" integrity="sha384-eI7PSr3L1XLISH8JdDII5YN/njoSsxfbrkCTnJrzXt+ENP5MOVBxD+l6sEG4zoLp" crossorigin="anonymous">
         <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
         <script src="https://kit.fontawesome.com/aac86c1a2f.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://kit.fontawesome.com/aac86c1a2f.css" crossorigin="anonymous">
@@ -78,9 +79,10 @@
                                     <a class="nav-link active dropdown-toggle" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="{{ path('edit_user')}}">Mon compte</a>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                         <a class="dropdown-item" href="{{path('edit_user')}}">Mon profil</a>
-                                        {% if is_granted('ROLE_GUIDE') -%}
+                                        {% if is_granted('ROLE_GUIDE') %}
                                             <a class="dropdown-item" href="{{ path('tripGuide')}}">Mes réservations</a>
-                                        
+                                        {% elseif  is_granted('ROLE_ADMIN')  %}
+                                            <a class="dropdown-item" href="{{ path('app_dashbord')}}">Dashbord</a>
                                         {% else %}
                                         <a class="dropdown-item" href="{{ path('user_reservation')}}">Mes réservations</a>
                                         {%- endif %}

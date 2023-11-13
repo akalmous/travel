@@ -100,7 +100,7 @@ class TripRepository extends ServiceEntityRepository
             // filtrer par le prix
 
             if ($price) {
-            $price = intval($price);
+            $price = intval($price); //convert to int 
             $qb->andWhere("t.price < :price or t.price = :price")
             ->setParameter('price',  $price );
             }
@@ -143,6 +143,26 @@ class TripRepository extends ServiceEntityRepository
 
         // returns an array of Product objects
   
+    }
+    // pour le dashbord : recuperer les trips de cette année
+
+  //    /**
+//     * @return Trip[] Returns an array of Trip objects
+//     */
+    public function findByDateTrips(): array
+    {
+         // je récupre l'année en cours afin de filtrer tout les guides inscrits au cours de cette année
+        $year = date("Y");
+        $date = "$year-00-00";
+        return $this->createQueryBuilder('t')
+            ->andwhere("t.archived is null ")
+            ->andWhere("t.creationDate > :date or t.creationDate = :date ")
+            ->setParameter('date',  $date )
+            //->orderBy('u.id', 'ASC')
+            //->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
     }
     
 

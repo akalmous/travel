@@ -57,6 +57,9 @@ class GuideRepository extends ServiceEntityRepository
 //        ;
 //    }
 
+
+
+
     public function findOneBySomeField($userId): ?Guide
     {
         return $this->createQueryBuilder('g')

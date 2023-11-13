@@ -19,32 +19,58 @@
   </small>
 </div>
   {% else %}
-<table class="table">
-  <thead>
-    <tr>
-      
-      <th scope="col">Nom du Voyage</th>
-      <th scope="col">Guide</th>
-      <th scope="col">Date de réservation</th>
-      <th scope="col">Prix</th>
-    </tr>
-  </thead>
-  <tbody>
+
   {% for booking in bookings %}
-  
-    
-  
-    <tr>
-    
-      <th scope="row">{{booking.trip.name}}</th>
-      <td>{{booking.trip.guide.user.firstName}}</td>
-      <td>{{booking.reservationDate|date('Y-m-d')}}</td>
-      <td> {{booking.price}}€ </td>
+
+                            <div class="card mb-5" style="width: 900px; height : 250px; justify-content: center!important; margin: 0 auto;">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        {% for picture in booking.trip.pictures | slice(0, 1) %}
+                                        <img src="{{ asset('/uploads/'~picture.name) }}" class="card-img " alt="...">
+                                        {% endfor %}
+                                    </div>
+
+                                    <div class="col-md-7">
+                                        <div class="card-body">
+
+                                            <div class=" d-flex w-100 justify-content-between"> 
+                                                <small id="small" class="text-muted">{{booking.trip.arrivedPlace}}</small> 
+                                                <small id="small" class="text-muted">{{booking.price}}€</small>
       
-    </tr>
+                                            </div>
+
+                                            <h5 class="card-title mt-2">{{ booking.trip.name }}</h5>
+                                            <div id ="desc" class="card-text">{{ booking.trip.summary|raw  }} </div>
+                                            <p class="card-text"><small class="text-muted">Date de départ  {{ booking.trip.departureDate |date('d-m-Y') }}</small>
+                                            <br>
+
+                                            <small class="text-muted mt-0">Date de retour  {{ booking.trip.returnDate |date('d-m-Y') }}</small><br>
+                                            </p>
+
+                                            <div class="position-absolute bottom-1 ">
+                                                {% for pictureGuide in booking.trip.guide.pictureGuides %}
+                                                    
+                                                    <img  src="{{ asset('/uploads/'~pictureGuide.name) }}" class="imgGuide" >
+                                                {% endfor %}
+                                                
+                                                <small id="small" class="text-muted">{{booking.trip.guide.user.firstName}}</small> 
+                                                
+                                            </div>
+                                            <div class="position-absolute bottom-1 end-0" style="margin-right : 15px;">
+                                                <small class="text-muted "> {{ booking.reservationDate |date('d-m-Y') }}</small>
+                                            </div>
+                                            
+
+                                        </div>   
+                                    </div>
+                                    
+                                </div>
+                            </div>
+             
+  
+    
     {% endfor %}
-  </tbody>
-</table>
+
 {% endif %}
 
 
