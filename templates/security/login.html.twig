@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'header.html.twig' %}
 
 {% block title %}Connexion{% endblock %}
 
@@ -28,6 +28,7 @@
     <input type="hidden" name="_csrf_token"
            value="{{ csrf_token('authenticate') }}"
     >
+    
 
     {#
         Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.

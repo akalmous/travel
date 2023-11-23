@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'header.html.twig' %}
 {% block head %}
 <script src="https://js.stripe.com/v3/"></script>
 
@@ -23,10 +23,28 @@
                 <img src="{{ asset('/uploads/'~picture.name) }}" style="height : 500px" class="d-block w-100" alt="...">
             
                 <div class="justify-content-end carousel-caption d-none d-md-block" style="text-align : right">
-                    
+                
+
+                    {% if is_granted('ROLE_GUIDE')%}
+                        {% if trip.guide ==  null %}
+                        
+                            <a href="{{ path('participate_trip', {id: trip.id, userId: app.user.id}) }} " class="btn btn-secondary" style="width : 15%; border-radius: 15px" type ="submit" name= "participate"> Participer </a>
+                            
+                            <i  id="like" onclick="fav(this)" class="fa-regular fa-heart"></i>
+                            {% elseif trip.guide.user.id == app.user.id %}
+                        
+                            <button class="btn btn-secondary" style="width : 25%; border-radius: 15px">Merci d'avoir participé à ce voyage </button>
+                        
+                            {% else %} 
+                        
+                            <small class="btn btn-secondary" style="width : 15%; border-radius: 15px">Un guide particpe déja à ce voyage </small>
+
+                        {% endif %}
+                    {% else %}
                     
                     <a class="btn btn-secondary" id="btnreserver" data-bs-toggle="modal" href="#exampleModalToggle"  role="button">Réserver</a>
                     <i  id="like" onclick="fav(this)" class="fa-regular fa-heart"></i>
+                    {% endif %}
                 </div>
             </div>
             

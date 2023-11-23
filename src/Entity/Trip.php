@@ -72,6 +72,9 @@ class Trip
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $creationDate = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $salaryGuide = null;
+
    
 
     
@@ -340,6 +343,18 @@ class Trip
     public function setCreationDate(\DateTimeInterface $creationDate): self
     {
         $this->creationDate = $creationDate;
+
+        return $this;
+    }
+
+    public function getSalaryGuide(): ?string
+    {
+        return $this->salaryGuide;
+    }
+
+    public function setSalaryGuide(?string $salaryGuide): self
+    {
+        $this->salaryGuide = $salaryGuide;
 
         return $this;
     }

@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>Facture</title>
+    </head>
+    <body>
+    <h2 style = "text-align : center; color : #76966a "> {{trip.name}}</h2>
+    {% for picture in trip.pictures | slice(0, 1) %}
+                <img src="http://localhost/travel/public/uploads/{{ picture.name }} "  class="d-block w-100" alt="...">
+                
+            {% endfor %}
+        <h4 class= "mt-5">Récapitulatif de votre participation au voyage</h4>
+        
+        
+
+        <h4 class= "mt-5" style ='color : #76966a'>Informations personelles</h4>
+        <p><span>Nom : </span>{{trip.guide.user.firstName}} {{trip.guide.user.lastName}}</p>
+        <p><span>Adresse de messagerie </span>: {{trip.guide.user.email}}</p>
+        
+
+        
+         <h4 class= "mt-5" style ='color : #76966a'>Votre salaire</h4>
+        <p><span>Le prix </span>: {{salaryGuide}}€</p>
+
+        
+
+        
+            <h4 class= "mt-5" style ='color : #76966a'>Votre guide</h4>
+            <p><span>Nombre de participants pour l'instant </span>: {{trip.reservedPlaces}}</p>
+            <p> <span>Nombre de places restantes </span>: {{trip.numberPlaces}}</p>
+            
+        
+    
+    </body>
+</html>
+
+<style>
+span{
+    font-weight: bold;
+}
+</style>
+{% endblock %}

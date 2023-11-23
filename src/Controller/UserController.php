@@ -79,12 +79,12 @@ class UserController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_USER');
         $user = $this->getUser()->getId();
         
-        dump($user);
+        
         
         $bookings = $bookingRepository->findBy([
             'user' => $user
         ]);
-
+        
         return $this->render('user/reservations.html.twig',['user'=>$user,  'bookings' => $bookings]);
     }
 }

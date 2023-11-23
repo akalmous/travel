@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'header.html.twig' %}
 
 {% block title %}Hello UserController!{% endblock %}
 {% block body %}
@@ -58,6 +58,7 @@
                                             </div>
                                             <div class="position-absolute bottom-1 end-0" style="margin-right : 15px;">
                                                 <small class="text-muted "> {{ booking.reservationDate |date('d-m-Y') }}</small>
+                                                <a href="{{ path('app_summary', {'id': booking.id}) }}"><small>Recap</small></a>
                                             </div>
                                             
 

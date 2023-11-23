@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'header.html.twig' %}
 
 {% block title %}Hello GuideController!{% endblock %}
 
@@ -9,7 +9,7 @@
 </style>
 
 
-<div class="col-12">
+
             <div class="main">
                 <div  class="container">
                     <div  class=" justify-content-center row row-cols-1 row-cols-md-2 g-0">
@@ -18,7 +18,8 @@
                                 <h4>Vous avez particpé à 0 voyages pour l'instant</h4>
                         {% else %}
                         {% for trip in trips %}
-                            <div class="card mt-3 mb-4" style="width: 800px; height : 250px">
+                        
+                            <div class="card my-3" style="width: 800px; height : 250px">
                                 <div class="row no-gutters">
                                     <div class="col-sm-5">
                                         {% for picture in trip.pictures | slice(0, 1) %}
@@ -35,7 +36,7 @@
                                             </div>
 
                                             <h5 class="card-title mt-2">{{ trip.name }}</h5>
-                                            <p id ="desc" class="card-text">{{ trip.description }}</p>
+                                            <div id ="desc" class="card-text">{{ trip.summary|raw  }} </div>
                                             <p class="card-text"><small class="text-muted">Date de départ  {{ trip.departureDate |date('d-m-Y') }}</small>
                                             <br>
 
@@ -47,8 +48,8 @@
                                             </div>
                                             
                                             <div class="position-absolute bottom-1 end-0" style="margin-right : 15px;">
-
-                                                <a href="{{ path('guide_show_trip', {'id': trip.id}) }}">  <i class="far fa-eye"></i></a>
+                                                <a href="{{ path('guide_summary', {'id': trip.id}) }}"><i class="fa-solid fa-file-invoice-dollar"></i></a>
+                                                <a href="{{ path('show_trip', {'id': trip.id}) }}">  <i class="far fa-eye"></i></a>
                                                 
                                             </div>
 
@@ -57,11 +58,12 @@
                                     
                                 </div>
                             </div>
+                        
                         {% endfor %}
                         {% endif %}
                     </div>
                 </div>
             </div> 
         </div>
-</div>
+
 {% endblock %}

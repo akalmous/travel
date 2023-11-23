@@ -7,18 +7,40 @@
    
 <div class="container">
     <h2 style = "text-align : center">DASHBORD DE L'ANNEE EN COURS</h2>
+    
  </div>
-    <div class="row">
-        <div class="col-6">
-        
-            <canvas class="my-4" id="inscription"></canvas>
-        </div>
+    
+    
+        <div class="row">
+            <div class="col-2 my-5">
+                <div class="container"  style ="display : inline-grid ">
+                    <button id="btnfiltrer" class="btn btn-primary my-3" > <a style= "text-decoration: none; color : white" href="{{ path('choose_trip')}}">Participer à d'autres voyages</a> </button>
+                    <button id="btnfiltrer" class="btn btn-primary my-3" > <a style= "text-decoration: none; color : white" href="{{ path('tripGuide')}}">Voyages</a> </button>
+                    <button id="btnfiltrer" type="button" class="btn btn-primary my-3" ><a style= "text-decoration: none; color : white" href="{{path('edit_user')}}">Mon profil</a> </button>
+                
+                    
+                </div>
+            </div>
 
-        <div class="col-6">
-            <canvas class="my-4" id="reservation" ></canvas>
+            <div class="col-5">
+                
+            <canvas class="my-4 mt-5" id="reservation" style="width : 400px" ></canvas>
+            
+            
+            </div>
+
+            <div class="col-5">
+                
+            <canvas class="my-4 mt-5" id="salaire" style="width : 400px" ></canvas>
+            
+            </div>
         </div>
-   </div>
-  
+    
+            
+   
+  {{ dump(trip) }}
+
+
    <script>
    /* globals Chart:false */
 
@@ -28,9 +50,9 @@
     
   // Graphs
 
-  const ctx = document.getElementById('inscription')
-  const xValues = ["Guides", "Utlisateurs inscrits"];
-  const yValues = [{{guides}}, {{users}}];
+  const ctx = document.getElementById('reservation')
+  const xValues = [ "Voyages"];
+  const yValues = [{{trips}}];
   // eslint-disable-next-line no-unused-vars
   const myChart = new Chart(ctx, {
     type: 'bar',
@@ -39,16 +61,15 @@
       labels: xValues,
       
       datasets: [{
-        label: "DASHBORD DES INSCRIPTIONS",
+        label: "DASHBORD DE MES PARTICIPATIONS AUX VOYAGES",
         data: yValues,
         lineTension: 0,
         backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(255, 159, 64, 0.2)',
+        '#76966a38',
+        
         ],
         borderColor: [
-        'rgb(255, 99, 132)',
-        'rgb(255, 159, 64)',
+        '#76966a',
         ],
 
         
@@ -79,7 +100,7 @@
 
             x: {
                 title: {
-                    display : true,
+                    display : false,
                     text : 'test',
 
                     },
@@ -92,18 +113,20 @@
 
    </script>
 
-   <script>
+      <script>
    /* globals Chart:false */
 
 (() => {
   'use strict'
 
-    
+
   // Graphs
 
-  const ctx = document.getElementById('reservation')
-  const xValues = ["Réservations", "Voyages"];
-  const yValues = [{{bookings}}, {{trips}}];
+  
+  const ctx = document.getElementById('salaire');
+  const xValues = {{nameTrip|raw}};
+  const yValues = {{salaryGuide|raw}};
+console.log(xValues)
   // eslint-disable-next-line no-unused-vars
   const myChart = new Chart(ctx, {
     type: 'bar',
@@ -112,17 +135,15 @@
       labels: xValues,
       
       datasets: [{
-        label: "DASHBORD DES RESERVATIONS",
+        label: "DASHBORD DE MES PARTICIPATIONS AUX VOYAGES",
         data: yValues,
         lineTension: 0,
         backgroundColor: [
-        'rgba(255, 205, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
+        '#76966a38',
         
         ],
         borderColor: [
-        'rgb(255, 205, 86)',
-        'rgb(75, 192, 192)'
+        '#76966a',
         ],
 
         
@@ -146,14 +167,21 @@
             y: {
                 title: {
                     display : true,
-                    text : 'Nombre ',
+                    text : 'Nombre € ',
 
+                    },
+
+                    ticks: {
+                    // Include a dollar sign in the ticks
+                    callback: function(value, index, ticks) {
+                        return  value  + ' €';
                     }
+                }
                 },
 
             x: {
                 title: {
-                    display : true,
+                    display : false,
                     text : 'test',
 
                     },

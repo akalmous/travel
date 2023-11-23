@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Booking;
 use App\Entity\Trip;
 use App\Repository\TripRepository;
+use DateTime;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\AST\QuantifiedExpression;
@@ -74,7 +75,7 @@ class PaiementController extends AbstractController
     #[Route('/success', name: 'success')]
     public function action(Request $request, TripRepository $tripRepository, EntityManagerInterface $entityManager): Response
     {
-
+        $date= new DateTime();
         // on recupere la session stripe et la session du checkout ainis que l'id du trip
         Stripe\Stripe::setApiKey($_ENV["STRIPE_SECRET"]);
         $id=$request->query->get('id');
@@ -94,6 +95,7 @@ class PaiementController extends AbstractController
             $booking->setReservationDate(new \DateTime());
             $booking->setUser($user);
             $booking->setTrip($trip);
+            $booking->setCreationDate($date);
             $booking->setGuide($guide);
             $trip->setReservedPlaces($trip->getReservedPlaces() + $quantity); // je modifie l'entité quantité dans la table trip 'les places reserves et les places restantes '
             $trip->setNumberPlaces($trip->getNumberPlaces() - $quantity);
@@ -101,6 +103,12 @@ class PaiementController extends AbstractController
             $entityManager->persist($trip);
             $entityManager->flush();
 
+            $nbPlaces = $trip->getReservedPlaces();
+            $price = $trip->getPrice();
+            $salaryGuide = 0.2 * ($nbPlaces * $price);
+            $trip->setSalaryGuide($salaryGuide);
+            $entityManager->persist($trip);
+            $entityManager->flush();
 
         // je redirige vers la template 
         return $this->render('paiement/success.html.twig',['session'=> $session, 'quantity' => $quantity , 'id'=>$id, 'trip'=>$trip] );

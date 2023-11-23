@@ -20,5 +20,3 @@
     "build": "parcel build src/index.html"
   }
 }
- 
-

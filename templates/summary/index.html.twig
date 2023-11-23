@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <title>Facture</title>
+    </head>
+    <body>
+    <h2 style = "text-align : center; color : #76966a "> {{booking.trip.name}}</h2>
+    {% for picture in booking.trip.pictures | slice(0, 1) %}
+                <img src="http://localhost/travel/public/uploads/{{ picture.name }} "  class="d-block w-100" alt="...">
+                
+            {% endfor %}
+        <h4 class= "mt-5">Récapitulatif de votre résarvation</h4>
+        <p>Merci d'avoir réservé avex nous !! </p>
+        
+
+        <h4 class= "mt-5" style ='color : #76966a'>Informations personelles</h4>
+        <p><span>Nom : </span>{{booking.user.firstName}} {{booking.user.lastName}}</p>
+        <p><span>Adresse de messagerie </span>: {{booking.user.email}}</p>
+        
+
+        
+         <h4 class= "mt-5" style ='color : #76966a'>Informations du voyage</h4>
+        <p><span>Le prix </span>: {{booking.price}}€</p>
+        <p ><span>Date de réservation </span> : {{booking.reservationDate |date('d-m-Y')}}</p>
+
+        
+
+        
+            <h4 class= "mt-5" style ='color : #76966a'>Votre guide</h4>
+            <p><span>Nom complet </span>: {{booking.guide.user.firstName}} {{booking.guide.user.lastName}}</p>
+            <p> <span>Adresse de messagerie </span>: {{booking.guide.user.email}}</p>
+            
+        
+    
+    </body>
+</html>
+
+<style>
+span{
+    font-weight: bold;
+}
+</style>
+{% endblock %}

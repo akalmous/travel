@@ -164,6 +164,24 @@ class TripRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findByDateTripsGuides($guide): array
+    {
+         // je récupre l'année en cours afin de filtrer tout les guides inscrits au cours de cette année
+        $year = date("Y");
+        $date = "$year-00-00";
+        return $this->createQueryBuilder('t')
+            ->andwhere("t.archived is null ")
+            ->andWhere("t.departureDate > :date or t.departureDate = :date ")
+            ->andWhere("t.guide = :guide")
+            ->setParameter('date',  $date )
+            ->setParameter('guide',$guide)
+            //->orderBy('u.id', 'ASC')
+            //->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
     
 
 
